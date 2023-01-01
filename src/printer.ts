@@ -41,4 +41,4 @@ function genericPrint(path, options, print) {
   return nodes[node.type].print({ node, options, path, print });
 }
 
-module.exports = genericPrint;
+module.exports = { print: genericPrint };

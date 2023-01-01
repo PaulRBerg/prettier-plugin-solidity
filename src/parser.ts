@@ -184,4 +184,4 @@ function parse(text, _parsers, options = _parsers) {
   return parsed;
 }
 
-module.exports = parse;
+module.exports = { parse };

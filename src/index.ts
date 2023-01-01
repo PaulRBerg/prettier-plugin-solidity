@@ -1,9 +1,9 @@
-const { handleComments, printComment } = require('./comments');
-const massageAstNode = require('./clean');
-const loc = require('./loc');
-const options = require('./options');
-const parse = require('./parser');
-const print = require('./printer');
+import { handleComments, printComment } from './comments';
+import { massageAstNode } from './clean';
+import { locEnd, locStart } from './loc';
+import { options } from './options';
+import { parse } from './parser';
+import { print } from './printer';
 
 // https://prettier.io/docs/en/plugins.html#languages
 // https://github.com/ikatyang/linguist-languages/blob/master/data/Solidity.json
@@ -22,7 +22,7 @@ const languages = [
 ];
 
 // https://prettier.io/docs/en/plugins.html#parsers
-const parser = { astFormat: 'solidity-ast', parse, ...loc };
+const parser = { astFormat: 'solidity-ast', parse, locEnd, locStart };
 const parsers = {
   'solidity-parse': parser
 };
