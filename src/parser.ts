@@ -1,22 +1,38 @@
-const extractComments = require('solidity-comments-extractor');
+import extractComments from 'solidity-comments-extractor';
 // https://prettier.io/docs/en/plugins.html#parsers
-const parser = require('@solidity-parser/parser');
-const coerce = require('semver/functions/coerce');
-const satisfies = require('semver/functions/satisfies');
+import * as parser from '@solidity-parser/parser';
+import coerce from 'semver/functions/coerce';
+import satisfies from 'semver/functions/satisfies';
+import type { Parser } from 'prettier';
+import type { BinOp } from '@solidity-parser/parser/src/ast-types';
+import type {
+  SourceUnitWithComments,
+  BinaryOperationWithComments,
+  ExpressionWithComments,
+  TupleExpressionWithComments
+} from './ast-types';
+import type { PrettierOptions } from './types';
 
-const tryHug = (node, operators) => {
+const tryHug = (node: ExpressionWithComments, operators: BinOp[]) => {
   if (node.type === 'BinaryOperation' && operators.includes(node.operator))
     return {
       type: 'TupleExpression',
       components: [node],
       isArray: false
-    };
+    } as TupleExpressionWithComments;
   return node;
 };
 
-function parse(text, _parsers, options = _parsers) {
+function parse(
+  text: string,
+  _parsers: Parser[] | PrettierOptions,
+  options = _parsers as PrettierOptions
+) {
   const compiler = coerce(options.compiler);
-  const parsed = parser.parse(text, { loc: true, range: true });
+  const parsed = parser.parse(text, {
+    loc: true,
+    range: true
+  }) as SourceUnitWithComments;
   parsed.comments = extractComments(text);
 
   parser.visit(parsed, {
@@ -49,12 +65,6 @@ function parse(text, _parsers, options = _parsers) {
           }
         });
       }
-    },
-    ForStatement(ctx) {
-      if (ctx.initExpression) {
-        ctx.initExpression.omitSemicolon = true;
-      }
-      ctx.loopExpression.omitSemicolon = true;
     },
     HexLiteral(ctx) {
       ctx.value = options.singleQuote
@@ -108,7 +118,7 @@ function parse(text, _parsers, options = _parsers) {
                   operator: '**',
                   left: ctx.left.right,
                   right: ctx.right
-                }
+                } as BinaryOperationWithComments
               ],
               isArray: false
             };

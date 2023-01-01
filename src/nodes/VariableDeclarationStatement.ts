@@ -31,12 +31,16 @@ const VariableDeclarationStatement = {
     groupIndex += 1;
     const initialValueDoc = initialValue(node, path, print);
 
+    const parent = path.getParentNode();
+    const omitSemicolon =
+      parent.type === 'ForStatement' &&
+      (node === parent.initExpression || node === parent.loopExpression);
     return group([
       declarationDoc,
       indentIfBreak(initialValueDoc, {
         groupId: declarationDoc.id
       }),
-      node.omitSemicolon ? '' : ';'
+      omitSemicolon ? '' : ';'
     ]);
   }
 };

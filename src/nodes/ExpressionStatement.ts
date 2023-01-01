@@ -23,7 +23,11 @@ const ExpressionStatement = {
     }
 
     parts.push(path.call(print, 'expression'));
-    parts.push(node.omitSemicolon ? '' : ';');
+
+    const omitSemicolon =
+      parent.type === 'ForStatement' &&
+      (node === parent.initExpression || node === parent.loopExpression);
+    parts.push(omitSemicolon ? '' : ';');
 
     return parts;
   }
