@@ -1,11 +1,8 @@
-const {
-  util: {
-    addLeadingComment,
-    addTrailingComment,
-    addDanglingComment,
-    getNextNonSpaceNonCommentCharacterIndex
-  }
-} = require('prettier');
+import { util } from 'prettier';
+import { getNextNonSpaceNonCommentCharacter } from '../../common/util';
+import type { HandlerArguments } from '../comment-types';
+
+const { addLeadingComment, addTrailingComment, addDanglingComment } = util;
 
 function handleModifierInvocationComments({
   text,
@@ -13,7 +10,7 @@ function handleModifierInvocationComments({
   enclosingNode,
   comment,
   options
-}) {
+}: HandlerArguments) {
   if (!enclosingNode || enclosingNode.type !== 'ModifierInvocation') {
     return false;
   }
@@ -23,8 +20,10 @@ function handleModifierInvocationComments({
   //    function a() public modifier /* comment 1 */ ( /* comment 2 */ ) /* comment 3 */
   // The only workaround I found is to look at the next character to see if
   // it is a ().
-  const nextCharacter = text.charAt(
-    getNextNonSpaceNonCommentCharacterIndex(text, comment, options.locEnd)
+  const nextCharacter = getNextNonSpaceNonCommentCharacter(
+    text,
+    comment,
+    options.locEnd
   );
 
   // The comment is behind the start of the Parentheses `()`

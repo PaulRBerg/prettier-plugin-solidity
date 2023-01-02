@@ -6,6 +6,7 @@ export interface PrettierParserOptions extends ParserOptions {
 }
 
 export type PrettierComment = Comment & {
+  printed: boolean;
   precedingNode: ASTNodeWithComments;
   enclosingNode: ASTNodeWithComments;
   followingNode: ASTNodeWithComments;

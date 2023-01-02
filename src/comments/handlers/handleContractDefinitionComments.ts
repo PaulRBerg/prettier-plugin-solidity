@@ -1,20 +1,17 @@
-const {
-  util: {
-    addLeadingComment,
-    addTrailingComment,
-    addDanglingComment,
-    getNextNonSpaceNonCommentCharacterIndex
-  }
-} = require('prettier');
+import { util } from 'prettier';
+import { getNextNonSpaceNonCommentCharacter } from '../../common/util';
+import type { HandlerArguments } from '../comment-types';
 
-function handleContractDefinitionComments({
+const { addLeadingComment, addTrailingComment, addDanglingComment } = util;
+
+export function handleContractDefinitionComments({
   text,
   precedingNode,
   enclosingNode,
   followingNode,
   comment,
   options
-}) {
+}: HandlerArguments) {
   if (!enclosingNode || enclosingNode.type !== 'ContractDefinition') {
     return false;
   }
@@ -24,8 +21,10 @@ function handleContractDefinitionComments({
   //   contract a is abc /* comment */ {}
   // The only workaround I found is to look at the next character to see if
   // it is a {}.
-  const nextCharacter = text.charAt(
-    getNextNonSpaceNonCommentCharacterIndex(text, comment, options.locEnd)
+  const nextCharacter = getNextNonSpaceNonCommentCharacter(
+    text,
+    comment,
+    options.locEnd
   );
 
   // The comment is behind the start of the Block `{}` or behind a base contract
@@ -56,5 +55,3 @@ function handleContractDefinitionComments({
 
   return false;
 }
-
-module.exports = handleContractDefinitionComments;

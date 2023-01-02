@@ -1,16 +1,35 @@
 // see: https://github.com/prettier/prettier/blob/main/src/language-js/loc.js
+import type { ASTNodeWithComments } from './ast-types';
+import type { Expression } from '@solidity-parser/parser/src/ast-types';
 
-function getRange(index, node) {
+export interface WithExpression {
+  expression: Expression;
+}
+
+function getExpressionRange(
+  node: ASTNodeWithComments
+): [number, number] | undefined {
+  return (
+    (node as WithExpression).expression &&
+    (node as WithExpression).expression.range
+  );
+}
+
+function getRange(index: number, node: ASTNodeWithComments) {
   if (node.range) {
     return node.range[index];
   }
-  if (node.expression && node.expression.range) {
-    return node.expression.range[index];
+  const range = getExpressionRange(node);
+  if (range) {
+    return range[index];
   }
-  return null;
+  return 0;
 }
 
-module.exports = {
-  locEnd: (node) => getRange(1, node),
-  locStart: (node) => getRange(0, node)
-};
+export function locEnd(node: ASTNodeWithComments) {
+  return getRange(1, node);
+}
+
+export function locStart(node: ASTNodeWithComments) {
+  return getRange(0, node);
+}

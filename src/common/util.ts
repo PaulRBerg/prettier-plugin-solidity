@@ -1,20 +1,34 @@
 import { util, version } from 'prettier';
 import satisfies from 'semver/functions/satisfies';
 
+import type { Options } from 'prettier';
+import type { ASTNodeWithComments } from '../ast-types';
+
 const { getNextNonSpaceNonCommentCharacterIndex, makeString } = util;
 
-const prettierVersionSatisfies = (range: string) => satisfies(version, range);
+export function prettierVersionSatisfies(range: string): boolean {
+  return satisfies(version, range);
+}
 
-function getNextNonSpaceNonCommentCharacter(text: string, node: any, locEnd) {
+export function getNextNonSpaceNonCommentCharacter(
+  text: string,
+  node: any,
+  locEnd: (node: ASTNodeWithComments) => number
+) {
   return text.charAt(
     getNextNonSpaceNonCommentCharacterIndex(text, node, locEnd) as number
   );
 }
 
-function printString(rawContent, options) {
-  const double = { quote: '"', regex: /"/g };
-  const single = { quote: "'", regex: /'/g };
+interface QuoteRegex {
+  quote: util.Quote;
+  regex: RegExp;
+}
 
+const double: QuoteRegex = { quote: '"', regex: /"/g };
+const single: QuoteRegex = { quote: "'", regex: /'/g };
+
+export function printString(rawContent: string, options: Options) {
   const preferred = options.singleQuote ? single : double;
   const alternate = preferred === single ? double : single;
 
@@ -46,7 +60,7 @@ function printString(rawContent, options) {
   return makeString(rawContent, enclosingQuote);
 }
 
-function hasNodeIgnoreComment(node) {
+export function hasNodeIgnoreComment(node: ASTNodeWithComments) {
   return (
     node &&
     node.comments &&
@@ -54,10 +68,3 @@ function hasNodeIgnoreComment(node) {
     node.comments.some((comment) => comment.value.trim() === 'prettier-ignore')
   );
 }
-
-module.exports = {
-  getNextNonSpaceNonCommentCharacter,
-  printString,
-  prettierVersionSatisfies,
-  hasNodeIgnoreComment
-};

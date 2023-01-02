@@ -1,4 +1,4 @@
-const handler = require('./handler');
-const printer = require('./printer');
+import handler from './handleComments';
+import printer from './printComments';
 
-module.exports = { handleComments: handler, printComment: printer };
+export default { handleComments: handler, printComments: printer };

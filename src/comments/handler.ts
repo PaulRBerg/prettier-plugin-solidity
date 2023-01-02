@@ -1,20 +1,22 @@
-const {
+import type { ParserOptions, AstPath } from 'prettier';
+import {
   handleOwnLineComment,
   handleEndOfLineComment,
   handleRemainingComment
-} = require('../prettier-comments/language-js/comments');
-
-const handlers = require('./handlers');
+} from '../prettier-comments/language-js/comments';
+import handlers from './handlers';
+import type { PrettierComment } from '../types';
+import type { HandlerArguments } from './comment-types';
 
 function solidityHandleOwnLineComment(
-  comment,
-  text,
-  options,
-  ast,
-  isLastComment
+  comment: PrettierComment,
+  text: string,
+  options: ParserOptions,
+  ast: AstPath,
+  isLastComment: boolean
 ) {
   const { precedingNode, enclosingNode, followingNode } = comment;
-  const handlerArguments = {
+  const handlerArguments: HandlerArguments = {
     text,
     precedingNode,
     enclosingNode,
@@ -33,14 +35,14 @@ function solidityHandleOwnLineComment(
 }
 
 function solidityHandleEndOfLineComment(
-  comment,
-  text,
-  options,
-  ast,
-  isLastComment
+  comment: PrettierComment,
+  text: string,
+  options: ParserOptions,
+  ast: AstPath,
+  isLastComment: boolean
 ) {
   const { precedingNode, enclosingNode, followingNode } = comment;
-  const handlerArguments = {
+  const handlerArguments: HandlerArguments = {
     text,
     precedingNode,
     enclosingNode,
@@ -59,14 +61,14 @@ function solidityHandleEndOfLineComment(
 }
 
 function solidityHandleRemainingComment(
-  comment,
-  text,
-  options,
-  ast,
-  isLastComment
+  comment: PrettierComment,
+  text: string,
+  options: ParserOptions,
+  ast: AstPath,
+  isLastComment: boolean
 ) {
   const { precedingNode, enclosingNode, followingNode } = comment;
-  const handlerArguments = {
+  const handlerArguments: HandlerArguments = {
     text,
     precedingNode,
     enclosingNode,
@@ -84,11 +86,11 @@ function solidityHandleRemainingComment(
   return false;
 }
 
-function isBlockComment(comment) {
+function isBlockComment(comment: PrettierComment) {
   return comment.type === 'BlockComment';
 }
 
-module.exports = {
+export default {
   handleOwnLineComment: solidityHandleOwnLineComment,
   handleEndOfLineComment: solidityHandleEndOfLineComment,
   handleRemainingComment: solidityHandleRemainingComment,

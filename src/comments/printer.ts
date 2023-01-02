@@ -1,11 +1,11 @@
-const {
-  doc: {
-    builders: { hardline, join }
-  },
-  util: { hasNewline }
-} = require('prettier');
+import { doc, util } from 'prettier';
+import type { AstPath, ParserOptions } from 'prettier';
+import type { Comment } from '../ast-types';
 
-function isIndentableBlockComment(comment) {
+const { hardline, join } = doc.builders;
+const { hasNewline } = util;
+
+function isIndentableBlockComment(comment: Comment) {
   // If the comment has multiple lines and every line starts with a star
   // we can fix the indentation of each line. The stars in the `/*` and
   // `*/` delimiters are not included in the comment value, so add them
@@ -14,7 +14,7 @@ function isIndentableBlockComment(comment) {
   return lines.length > 1 && lines.every((line) => line.trim()[0] === '*');
 }
 
-function printIndentableBlockComment(comment) {
+function printIndentableBlockComment(comment: Comment) {
   const lines = comment.raw.split('\n');
 
   return [
@@ -31,7 +31,10 @@ function printIndentableBlockComment(comment) {
   ];
 }
 
-function printComment(commentPath, options) {
+export default function printComment(
+  commentPath: AstPath,
+  options: ParserOptions
+) {
   const comment = commentPath.getValue();
 
   switch (comment.type) {
@@ -60,5 +63,3 @@ function printComment(commentPath, options) {
       throw new Error(`Not a comment: ${JSON.stringify(comment)}`);
   }
 }
-
-module.exports = printComment;

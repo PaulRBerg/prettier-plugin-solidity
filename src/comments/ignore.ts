@@ -1,4 +1,7 @@
-function ignoreComments(path) {
+import { AstPath } from 'prettier';
+import { PrettierComment } from '../types';
+
+export function ignoreComments(path: AstPath) {
   const node = path.getValue();
   // We ignore anything that is not an object
   if (node === null || typeof node !== 'object') return;
@@ -13,7 +16,7 @@ function ignoreComments(path) {
       // The key `comments` will contain every comment for this node
       case 'comments':
         path.each((commentPath) => {
-          const comment = commentPath.getValue();
+          const comment = commentPath.getValue() as PrettierComment;
           comment.printed = true;
         }, 'comments');
         break;
@@ -29,5 +32,3 @@ function ignoreComments(path) {
     }
   });
 }
-
-module.exports = ignoreComments;
