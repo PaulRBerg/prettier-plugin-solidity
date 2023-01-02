@@ -1,13 +1,21 @@
-import { handleComments, printComment } from './comments';
+import * as comments from './comments';
 import massageAstNode from './clean';
 import { locEnd, locStart } from './loc';
 import { options } from './options';
-import { parse } from './parser';
-import { print } from './printer';
+import parse from './parser';
+import print from './printer';
+
+import type { SupportLanguage } from 'prettier';
+import type { Comment } from './ast-types';
+
+interface LinguistSupportLanguage extends SupportLanguage {
+  type?: string;
+  color?: string;
+}
 
 // https://prettier.io/docs/en/plugins.html#languages
 // https://github.com/ikatyang/linguist-languages/blob/master/data/Solidity.json
-const languages = [
+const languages: LinguistSupportLanguage[] = [
   {
     linguistLanguageId: 237469032,
     name: 'Solidity',
@@ -27,7 +35,7 @@ const parsers = {
   'solidity-parse': parser
 };
 
-const canAttachComment = (node) =>
+const canAttachComment = (node: Comment) =>
   node.type && node.type !== 'BlockComment' && node.type !== 'LineComment';
 
 // https://prettier.io/docs/en/plugins.html#printers
@@ -35,14 +43,14 @@ const printers = {
   'solidity-ast': {
     canAttachComment,
     handleComments: {
-      ownLine: handleComments.handleOwnLineComment,
-      endOfLine: handleComments.handleEndOfLineComment,
-      remaining: handleComments.handleRemainingComment
+      ownLine: comments.solidityHandleOwnLineComment,
+      endOfLine: comments.solidityHandleEndOfLineComment,
+      remaining: comments.solidityHandleRemainingComment
     },
-    isBlockComment: handleComments.isBlockComment,
+    isBlockComment: comments.isBlockComment,
     massageAstNode,
     print,
-    printComment
+    printComment: comments.printComment
   }
 };
 
@@ -52,7 +60,7 @@ const defaultOptions = {
   tabWidth: 4
 };
 
-module.exports = {
+export default {
   languages,
   parsers,
   printers,

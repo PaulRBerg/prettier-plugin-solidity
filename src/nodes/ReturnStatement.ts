@@ -1,10 +1,16 @@
-const {
-  doc: {
-    builders: { group, indent, line }
-  }
-} = require('prettier');
+import { doc } from 'prettier';
 
-const expression = (node, path, print) => {
+import type { AstPath, Doc } from 'prettier';
+import type { ReturnStatementWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
+
+const { group, indent, line } = doc.builders;
+
+const expression = (
+  node: ReturnStatementWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc
+) => {
   if (node.expression) {
     return node.expression.type === 'TupleExpression'
       ? [' ', path.call(print, 'expression')]
@@ -13,12 +19,10 @@ const expression = (node, path, print) => {
   return '';
 };
 
-const ReturnStatement = {
+export const ReturnStatement: NodePrinter = {
   print: ({ node, path, print }) => [
     'return',
-    expression(node, path, print),
+    expression(node as ReturnStatementWithComments, path, print),
     ';'
   ]
 };
-
-module.exports = ReturnStatement;

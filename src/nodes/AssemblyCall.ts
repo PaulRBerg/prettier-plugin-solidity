@@ -1,16 +1,17 @@
-const { printSeparatedList } = require('../common/printer-helpers');
+import { printSeparatedList } from '../common/printer-helpers';
 
-const AssemblyCall = {
+import type { AssemblyCallWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
+
+export const AssemblyCall: NodePrinter = {
   print: ({ node, path, print, options }) =>
-    node.arguments.length === 0 &&
+    (node as AssemblyCallWithComments).arguments.length === 0 &&
     options.originalText.charAt(options.locEnd(node)) !== ')'
-      ? node.functionName
+      ? (node as AssemblyCallWithComments).functionName
       : [
-          node.functionName,
+          (node as AssemblyCallWithComments).functionName,
           '(',
           printSeparatedList(path.map(print, 'arguments')),
           ')'
         ]
 };
-
-module.exports = AssemblyCall;

@@ -1,5 +1,6 @@
-const HexNumber = {
-  print: ({ node }) => node.value
-};
+import type { HexNumberWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
 
-module.exports = HexNumber;
+export const HexNumber: NodePrinter = {
+  print: ({ node }) => (node as HexNumberWithComments).value
+};

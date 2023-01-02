@@ -1,19 +1,21 @@
-const {
-  doc: {
-    builders: { line }
-  }
-} = require('prettier');
+import { doc } from 'prettier';
 
-const { printSeparatedList } = require('../common/printer-helpers');
+import { printSeparatedList } from '../common/printer-helpers';
 
-const AssemblyLocalDefinition = {
+import type { Doc } from 'prettier';
+import type { AssemblyLocalDefinitionWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
+
+const { line } = doc.builders;
+
+export const AssemblyLocalDefinition: NodePrinter = {
   print: ({ node, path, print }) => {
-    const parts = [
+    const parts: Doc[] = [
       'let',
       printSeparatedList(path.map(print, 'names'), { firstSeparator: line })
     ];
 
-    if (node.expression !== null) {
+    if ((node as AssemblyLocalDefinitionWithComments).expression !== null) {
       parts.push(':= ');
       parts.push(path.call(print, 'expression'));
     }
@@ -21,5 +23,3 @@ const AssemblyLocalDefinition = {
     return parts;
   }
 };
-
-module.exports = AssemblyLocalDefinition;

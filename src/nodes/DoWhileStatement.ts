@@ -1,24 +1,27 @@
-const {
-  doc: {
-    builders: { group, indent, line }
-  }
-} = require('prettier');
+import { doc } from 'prettier';
+import { printSeparatedItem } from '../common/printer-helpers';
 
-const { printSeparatedItem } = require('../common/printer-helpers');
+import type { AstPath, Doc } from 'prettier';
+import type { DoWhileStatementWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
 
-const printBody = (node, path, print) =>
+const { group, indent, line } = doc.builders;
+
+const body = (
+  node: DoWhileStatementWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc
+) =>
   node.body.type === 'Block'
     ? [' ', path.call(print, 'body'), ' ']
     : group([indent([line, path.call(print, 'body')]), line]);
 
-const DoWhileStatement = {
+export const DoWhileStatement: NodePrinter = {
   print: ({ node, path, print }) => [
     'do',
-    printBody(node, path, print),
+    body(node as DoWhileStatementWithComments, path, print),
     'while (',
     printSeparatedItem(path.call(print, 'condition')),
     ');'
   ]
 };
-
-module.exports = DoWhileStatement;

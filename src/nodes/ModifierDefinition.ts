@@ -1,12 +1,17 @@
-const {
-  doc: {
-    builders: { group, hardline, indent, line }
-  }
-} = require('prettier');
+import { doc } from 'prettier';
+import { printSeparatedList } from '../common/printer-helpers';
 
-const { printSeparatedList } = require('../common/printer-helpers');
+import type { AstPath, Doc } from 'prettier';
+import type { ModifierDefinitionWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
 
-const modifierParameters = (node, path, print) => {
+const { group, hardline, indent, line } = doc.builders;
+
+const modifierParameters = (
+  node: ModifierDefinitionWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc
+) => {
   if (node.parameters && node.parameters.length > 0) {
     return [
       '(',
@@ -26,9 +31,14 @@ const modifierParameters = (node, path, print) => {
   return '()';
 };
 
-const virtual = (node) => (node.isVirtual ? [line, 'virtual'] : '');
+const virtual = (node: ModifierDefinitionWithComments) =>
+  node.isVirtual ? [line, 'virtual'] : '';
 
-const override = (node, path, print) => {
+const override = (
+  node: ModifierDefinitionWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc
+) => {
   if (!node.override) return '';
   if (node.override.length === 0) return [line, 'override'];
   return [
@@ -39,20 +49,27 @@ const override = (node, path, print) => {
   ];
 };
 
-const body = (node, path, print) => {
+const body = (
+  node: ModifierDefinitionWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc
+) => {
   if (!node.body) return ';';
   if (node.isVirtual) return group([' ', path.call(print, 'body')]);
   return [' ', path.call(print, 'body')];
 };
 
-const ModifierDefinition = {
+export const ModifierDefinition: NodePrinter = {
   print: ({ node, path, print }) => [
     'modifier ',
-    node.name,
-    modifierParameters(node, path, print),
-    group(indent([virtual(node), override(node, path, print)])),
-    body(node, path, print)
+    (node as ModifierDefinitionWithComments).name,
+    modifierParameters(node as ModifierDefinitionWithComments, path, print),
+    group(
+      indent([
+        virtual(node as ModifierDefinitionWithComments),
+        override(node as ModifierDefinitionWithComments, path, print)
+      ])
+    ),
+    body(node as ModifierDefinitionWithComments, path, print)
   ]
 };
-
-module.exports = ModifierDefinition;

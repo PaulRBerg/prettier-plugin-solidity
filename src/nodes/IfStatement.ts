@@ -1,15 +1,18 @@
-const {
-  doc: {
-    builders: { group, hardline, indent, line }
-  }
-} = require('prettier');
+import { doc } from 'prettier';
+import { printComments, printSeparatedItem } from '../common/printer-helpers';
 
-const {
-  printComments,
-  printSeparatedItem
-} = require('../common/printer-helpers');
+import type { AstPath, Doc } from 'prettier';
+import type { Statement } from '@solidity-parser/parser/src/ast-types';
+import type { IfStatementWithComments } from '../ast-types';
+import type { NodePrinter, PrettierComment } from '../types';
 
-const printTrueBody = (node, path, print) => {
+const { group, hardline, indent, line } = doc.builders;
+
+const printTrueBody = (
+  node: IfStatementWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc
+) => {
   if (node.trueBody.type === 'Block') {
     return [' ', path.call(print, 'trueBody')];
   }
@@ -20,12 +23,22 @@ const printTrueBody = (node, path, print) => {
   );
 };
 
-const printFalseBody = (node, path, print) =>
-  node.falseBody.type === 'Block' || node.falseBody.type === 'IfStatement'
+const printFalseBody = (
+  node: IfStatementWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc
+) =>
+  (node.falseBody as Statement).type === 'Block' ||
+  (node.falseBody as Statement).type === 'IfStatement'
     ? [' ', path.call(print, 'falseBody')]
     : group(indent([line, path.call(print, 'falseBody')]));
 
-const printElse = (node, path, print, commentsBetweenIfAndElse) => {
+const printElse = (
+  node: IfStatementWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc,
+  commentsBetweenIfAndElse: PrettierComment[]
+) => {
   if (node.falseBody) {
     const elseOnSameLine =
       node.trueBody.type === 'Block' && commentsBetweenIfAndElse.length === 0;
@@ -38,9 +51,9 @@ const printElse = (node, path, print, commentsBetweenIfAndElse) => {
   return '';
 };
 
-const IfStatement = {
+export const IfStatement: NodePrinter = {
   print: ({ node, options, path, print }) => {
-    const comments = node.comments || [];
+    const comments = (node.comments as PrettierComment[]) || [];
     const commentsBetweenIfAndElse = comments.filter(
       (comment) => !comment.leading && !comment.trailing
     );
@@ -48,15 +61,23 @@ const IfStatement = {
     const parts = [];
 
     parts.push('if (', printSeparatedItem(path.call(print, 'condition')), ')');
-    parts.push(printTrueBody(node, path, print));
-    if (commentsBetweenIfAndElse.length && node.falseBody) {
+    parts.push(printTrueBody(node as IfStatementWithComments, path, print));
+    if (
+      commentsBetweenIfAndElse.length &&
+      (node as IfStatementWithComments).falseBody
+    ) {
       parts.push(hardline);
       parts.push(printComments(node, path, options));
     }
-    parts.push(printElse(node, path, print, commentsBetweenIfAndElse));
+    parts.push(
+      printElse(
+        node as IfStatementWithComments,
+        path,
+        print,
+        commentsBetweenIfAndElse
+      )
+    );
 
     return parts;
   }
 };
-
-module.exports = IfStatement;

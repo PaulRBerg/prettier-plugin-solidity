@@ -1,12 +1,12 @@
-const {
-  doc: {
-    builders: { hardline }
-  }
-} = require('prettier');
+import { doc } from 'prettier';
+import { printComments } from '../common/printer-helpers';
 
-const { printComments } = require('../common/printer-helpers');
+import type { Doc } from 'prettier';
+import type { NodePrinter } from '../types';
 
-const ExpressionStatement = {
+const { hardline } = doc.builders;
+
+export const ExpressionStatement: NodePrinter = {
   print: ({ node, options, path, print }) => {
     const parts = [];
 
@@ -14,7 +14,7 @@ const ExpressionStatement = {
 
     if (parent.type === 'IfStatement') {
       if (node.comments && node.comments.length) {
-        const comments = printComments(node, path, options);
+        const comments = printComments(node, path, options) as Doc[];
         if (comments && comments.length) {
           parts.push(comments);
           parts.push(hardline);
@@ -32,5 +32,3 @@ const ExpressionStatement = {
     return parts;
   }
 };
-
-module.exports = ExpressionStatement;

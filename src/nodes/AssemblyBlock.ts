@@ -1,8 +1,7 @@
-const {
-  doc: {
-    builders: { hardline }
-  }
-} = require('prettier');
+import { doc } from 'prettier';
+import type { NodePrinter } from '../types';
+
+const { hardline } = doc.builders;
 
 const {
   printComments,
@@ -10,7 +9,7 @@ const {
   printSeparatedItem
 } = require('../common/printer-helpers');
 
-const AssemblyBlock = {
+export const AssemblyBlock: NodePrinter = {
   print: ({ node, options, path, print }) => [
     '{',
     printSeparatedItem(
@@ -23,5 +22,3 @@ const AssemblyBlock = {
     '}'
   ]
 };
-
-module.exports = AssemblyBlock;

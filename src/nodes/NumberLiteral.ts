@@ -1,8 +1,13 @@
-const NumberLiteral = {
-  print: ({ node }) =>
-    node.subdenomination
-      ? [node.number, ' ', node.subdenomination]
-      : node.number
-};
+import type { NumberLiteralWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
 
-module.exports = NumberLiteral;
+export const NumberLiteral: NodePrinter = {
+  print: ({ node }) =>
+    (node as NumberLiteralWithComments).subdenomination
+      ? [
+          (node as NumberLiteralWithComments).number,
+          ' ',
+          (node as NumberLiteralWithComments).subdenomination as string
+        ]
+      : (node as NumberLiteralWithComments).number
+};

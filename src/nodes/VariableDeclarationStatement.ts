@@ -1,35 +1,48 @@
-const {
-  doc: {
-    builders: { group, indentIfBreak }
-  }
-} = require('prettier');
+import { doc } from 'prettier';
+import { printSeparatedList } from '../common/printer-helpers';
 
-const { printSeparatedList } = require('../common/printer-helpers');
+import type { AstPath, Doc } from 'prettier';
+import type { VariableDeclaration } from '@solidity-parser/parser/src/ast-types';
+import type { VariableDeclarationStatementWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
+import type { GroupWithId } from '../common/util';
 
-const embraceVariables = (doc, embrace) =>
-  embrace ? ['(', printSeparatedList(doc), ')'] : doc;
+const { group, indentIfBreak } = doc.builders;
 
-const initialValue = (node, path, print) =>
-  node.initialValue ? [' = ', path.call(print, 'initialValue')] : '';
+const embraceVariables = (variables: Doc[], embrace: boolean) =>
+  embrace ? ['(', printSeparatedList(variables), ')'] : variables;
+
+const initialValue = (
+  node: VariableDeclarationStatementWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc
+) => (node.initialValue ? [' = ', path.call(print, 'initialValue')] : '');
 
 let groupIndex = 0;
-const VariableDeclarationStatement = {
+export const VariableDeclarationStatement: NodePrinter = {
   print: ({ node, path, print }) => {
     const startsWithVar =
-      node.variables.filter((x) => x && x.typeName).length === 0;
+      (node as VariableDeclarationStatementWithComments).variables.filter(
+        (x) => x && (x as VariableDeclaration).typeName
+      ).length === 0;
 
     const declarationDoc = group(
       [
         startsWithVar ? 'var ' : '',
         embraceVariables(
           path.map(print, 'variables'),
-          node.variables.length > 1 || startsWithVar
+          (node as VariableDeclarationStatementWithComments).variables.length >
+            1 || startsWithVar
         )
       ],
-      { id: `VariableDeclarationStatement.variables-${groupIndex}` }
+      { id: Symbol(`VariableDeclarationStatement.variables-${groupIndex}`) }
     );
     groupIndex += 1;
-    const initialValueDoc = initialValue(node, path, print);
+    const initialValueDoc = initialValue(
+      node as VariableDeclarationStatementWithComments,
+      path,
+      print
+    );
 
     const parent = path.getParentNode();
     const omitSemicolon =
@@ -38,11 +51,9 @@ const VariableDeclarationStatement = {
     return group([
       declarationDoc,
       indentIfBreak(initialValueDoc, {
-        groupId: declarationDoc.id
+        groupId: (declarationDoc as GroupWithId).id as symbol
       }),
       omitSemicolon ? '' : ';'
     ]);
   }
 };
-
-module.exports = VariableDeclarationStatement;

@@ -1,10 +1,13 @@
-const {
-  doc: {
-    builders: { group, indent, label, softline }
-  }
-} = require('prettier');
+import { doc } from 'prettier';
+import { isLabel, LabelWithLabel } from '../common/util';
 
-const isEndOfChain = (node, path) => {
+import type { AstPath, Doc } from 'prettier';
+import type { MemberAccessWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
+
+const { group, indent, label, softline } = doc.builders;
+
+const isEndOfChain = (node: MemberAccessWithComments, path: AstPath) => {
   let i = 0;
   let currentNode = node;
   let parentNode = path.getParentNode(i);
@@ -93,9 +96,10 @@ const isEndOfChain = (node, path) => {
  * @returns a processed doc[] with the proper grouping and indentation ready to
  * be printed.
  */
-const processChain = (chain) => {
+const processChain = (chain: Doc[]) => {
   const firstSeparatorIndex = chain.findIndex(
-    (element) => element.label === 'separator'
+    (element) =>
+      isLabel(element) && (element as LabelWithLabel).label === 'separator'
   );
   // The doc[] before the first separator
   const firstExpression = chain.slice(0, firstSeparatorIndex);
@@ -107,21 +111,21 @@ const processChain = (chain) => {
   return label('MemberAccessChain', group([firstExpression, restOfChain]));
 };
 
-const MemberAccess = {
+export const MemberAccess: NodePrinter = {
   print: ({ node, path, print }) => {
     let expressionDoc = path.call(print, 'expression');
     if (Array.isArray(expressionDoc)) {
       expressionDoc = expressionDoc.flat();
     }
 
-    const doc = [
+    const doc: Doc[] = [
       expressionDoc,
       label('separator', [softline, '.']),
-      node.memberName
+      (node as MemberAccessWithComments).memberName
     ].flat();
 
-    return isEndOfChain(node, path) ? processChain(doc) : doc;
+    return isEndOfChain(node as MemberAccessWithComments, path)
+      ? processChain(doc)
+      : doc;
   }
 };
-
-module.exports = MemberAccess;

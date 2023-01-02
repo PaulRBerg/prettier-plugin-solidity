@@ -1,28 +1,43 @@
-const {
-  doc: {
-    builders: { group, line, softline }
-  }
-} = require('prettier');
-const coerce = require('semver/functions/coerce');
-const satisfies = require('semver/functions/satisfies');
+import { doc } from 'prettier';
+import coerce from 'semver/functions/coerce';
+import satisfies from 'semver/functions/satisfies';
+import { printSeparatedList } from '../common/printer-helpers';
+import { printString } from '../common/util';
 
-const { printSeparatedList } = require('../common/printer-helpers');
-const { printString } = require('../common/util');
+import type { Doc, ParserOptions } from 'prettier';
+import type { ImportDirectiveWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
 
-const ImportDirective = {
+const { group, line, softline } = doc.builders;
+
+interface ParserOptionsSolidity extends ParserOptions {
+  compiler?: string;
+}
+
+export const ImportDirective: NodePrinter = {
   print: ({ node, options }) => {
-    const importPath = printString(node.path, options);
-    let doc;
+    const importPath = printString(
+      (node as ImportDirectiveWithComments).path,
+      options
+    );
+    let doc: Doc;
 
-    if (node.unitAlias) {
+    if ((node as ImportDirectiveWithComments).unitAlias) {
       // import "./Foo.sol" as Foo;
-      doc = [importPath, ' as ', node.unitAlias];
-    } else if (node.symbolAliases) {
+      doc = [
+        importPath,
+        ' as ',
+        (node as ImportDirectiveWithComments).unitAlias as string
+      ];
+    } else if ((node as ImportDirectiveWithComments).symbolAliases) {
       // import { Foo, Bar as Qux } from "./Foo.sol";
-      const compiler = coerce(options.compiler);
-      const symbolAliases = node.symbolAliases.map(([a, b]) =>
-        b ? `${a} as ${b}` : a
-      );
+      const compiler = coerce((options as ParserOptionsSolidity).compiler);
+      const symbolAliases = (
+        (node as ImportDirectiveWithComments).symbolAliases as [
+          string,
+          string | null
+        ][]
+      ).map(([a, b]) => (b ? `${a} as ${b}` : a));
       let firstSeparator;
       let separator;
 
@@ -51,5 +66,3 @@ const ImportDirective = {
     return group(['import ', doc, ';']);
   }
 };
-
-module.exports = ImportDirective;

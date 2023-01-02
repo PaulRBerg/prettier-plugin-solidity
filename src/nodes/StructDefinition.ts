@@ -1,15 +1,15 @@
-const {
-  doc: {
-    builders: { hardline }
-  }
-} = require('prettier');
+import { doc } from 'prettier';
+import { printSeparatedList } from '../common/printer-helpers';
 
-const { printSeparatedList } = require('../common/printer-helpers');
+import type { StructDefinitionWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
 
-const StructDefinition = {
+const { hardline } = doc.builders;
+
+export const StructDefinition: NodePrinter = {
   print: ({ node, path, print }) => [
     'struct ',
-    node.name,
+    (node as StructDefinitionWithComments).name,
     ' {',
     printSeparatedList(path.map(print, 'members'), {
       firstSeparator: hardline,
@@ -19,5 +19,3 @@ const StructDefinition = {
     '}'
   ]
 };
-
-module.exports = StructDefinition;

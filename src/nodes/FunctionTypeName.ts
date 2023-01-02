@@ -1,12 +1,17 @@
-const {
-  doc: {
-    builders: { group, indent, line }
-  }
-} = require('prettier');
+import { doc } from 'prettier';
+import { printSeparatedList } from '../common/printer-helpers';
 
-const { printSeparatedList } = require('../common/printer-helpers');
+import type { AstPath, Doc } from 'prettier';
+import type { FunctionTypeNameWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
 
-const returnTypes = (node, path, print) =>
+const { group, indent, line } = doc.builders;
+
+const returnTypes = (
+  node: FunctionTypeNameWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc
+) =>
   node.returnTypes.length > 0
     ? [
         line,
@@ -16,29 +21,27 @@ const returnTypes = (node, path, print) =>
       ]
     : '';
 
-const visibility = (node) =>
+const visibility = (node: FunctionTypeNameWithComments) =>
   node.visibility && node.visibility !== 'default'
     ? [line, node.visibility]
     : '';
 
-const stateMutability = (node) =>
+const stateMutability = (node: FunctionTypeNameWithComments) =>
   node.stateMutability && node.stateMutability !== 'default'
     ? [line, node.stateMutability]
     : '';
 
-const FunctionTypeName = {
+export const FunctionTypeName: NodePrinter = {
   print: ({ node, path, print }) => [
     'function(',
     printSeparatedList(path.map(print, 'parameterTypes')),
     ')',
     indent(
       group([
-        visibility(node),
-        stateMutability(node),
-        returnTypes(node, path, print)
+        visibility(node as FunctionTypeNameWithComments),
+        stateMutability(node as FunctionTypeNameWithComments),
+        returnTypes(node as FunctionTypeNameWithComments, path, print)
       ])
     )
   ]
 };
-
-module.exports = FunctionTypeName;

@@ -1,5 +1,6 @@
-const EnumValue = {
-  print: ({ node }) => node.name
-};
+import type { EnumValueWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
 
-module.exports = EnumValue;
+export const EnumValue: NodePrinter = {
+  print: ({ node }) => (node as EnumValueWithComments).name
+};

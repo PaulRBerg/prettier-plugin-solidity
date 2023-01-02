@@ -1,46 +1,58 @@
-const {
-  doc: {
-    builders: { group, indent, line }
-  }
-} = require('prettier');
+import { doc } from 'prettier';
+import { printSeparatedList } from '../common/printer-helpers';
 
-const { printSeparatedList } = require('../common/printer-helpers');
+import type { AstPath, Doc } from 'prettier';
+import type { ForStatementWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
 
-const initExpression = (node, path, print) =>
-  node.initExpression ? path.call(print, 'initExpression') : '';
+const { group, indent, line } = doc.builders;
 
-const conditionExpression = (node, path, print) =>
-  node.conditionExpression ? path.call(print, 'conditionExpression') : '';
+const initExpression = (
+  node: ForStatementWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc
+) => (node.initExpression ? path.call(print, 'initExpression') : '');
 
-const loopExpression = (node, path, print) =>
-  node.loopExpression.expression ? path.call(print, 'loopExpression') : '';
+const conditionExpression = (
+  node: ForStatementWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc
+) => (node.conditionExpression ? path.call(print, 'conditionExpression') : '');
 
-const printBody = (node, path, print) =>
+const loopExpression = (
+  node: ForStatementWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc
+) => (node.loopExpression.expression ? path.call(print, 'loopExpression') : '');
+
+const printBody = (
+  node: ForStatementWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc
+) =>
   node.body.type === 'Block'
     ? [' ', path.call(print, 'body')]
     : group(indent([line, path.call(print, 'body')]));
 
-const ForStatement = {
+export const ForStatement: NodePrinter = {
   print: ({ node, path, print }) => [
     'for (',
     printSeparatedList(
       [
-        initExpression(node, path, print),
-        conditionExpression(node, path, print),
-        loopExpression(node, path, print)
+        initExpression(node as ForStatementWithComments, path, print),
+        conditionExpression(node as ForStatementWithComments, path, print),
+        loopExpression(node as ForStatementWithComments, path, print)
       ],
       {
         separator:
-          node.initExpression ||
-          node.conditionExpression ||
-          node.loopExpression.expression
+          (node as ForStatementWithComments).initExpression ||
+          (node as ForStatementWithComments).conditionExpression ||
+          (node as ForStatementWithComments).loopExpression.expression
             ? [';', line]
             : ';'
       }
     ),
     ')',
-    printBody(node, path, print)
+    printBody(node as ForStatementWithComments, path, print)
   ]
 };
-
-module.exports = ForStatement;

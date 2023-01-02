@@ -1,15 +1,21 @@
-const { printSeparatedList } = require('../common/printer-helpers');
+import { printSeparatedList } from '../common/printer-helpers';
 
-const printArguments = (node, path, print) =>
+import type { AstPath, Doc } from 'prettier';
+import type { InheritanceSpecifierWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
+
+const printArguments = (
+  node: InheritanceSpecifierWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc
+) =>
   node.arguments && node.arguments.length
     ? ['(', printSeparatedList(path.map(print, 'arguments')), ')']
     : '';
 
-const InheritanceSpecifier = {
+export const InheritanceSpecifier: NodePrinter = {
   print: ({ node, path, print }) => [
     path.call(print, 'baseName'),
-    printArguments(node, path, print)
+    printArguments(node as InheritanceSpecifierWithComments, path, print)
   ]
 };
-
-module.exports = InheritanceSpecifier;

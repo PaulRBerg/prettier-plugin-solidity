@@ -1,5 +1,6 @@
-const UserDefinedTypeName = {
-  print: ({ node }) => node.namePath
-};
+import type { UserDefinedTypeNameWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
 
-module.exports = UserDefinedTypeName;
+export const UserDefinedTypeName: NodePrinter = {
+  print: ({ node }) => (node as UserDefinedTypeNameWithComments).namePath
+};

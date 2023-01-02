@@ -1,8 +1,10 @@
+import type { SupportOptions } from 'prettier';
+
 const CATEGORY_GLOBAL = 'Global';
 const CATEGORY_COMMON = 'Common';
 const CATEGORY_SOLIDITY = 'Solidity';
 
-const options = {
+export const options: SupportOptions = {
   printWidth: {
     since: '0.0.0',
     category: CATEGORY_GLOBAL,
@@ -12,6 +14,7 @@ const options = {
     range: { start: 0, end: Number.POSITIVE_INFINITY, step: 1 }
   },
   tabWidth: {
+    since: '0.0.0',
     type: 'int',
     category: CATEGORY_GLOBAL,
     default: 2,
@@ -41,11 +44,10 @@ const options = {
     description: 'Use single quotes instead of double quotes.'
   },
   compiler: {
+    since: '1.0.0',
     category: CATEGORY_SOLIDITY,
     type: 'string',
     description:
       'The Solidity compiler version to help us avoid critical errors in format for the wrong version.'
   }
 };
-
-module.exports = { options };

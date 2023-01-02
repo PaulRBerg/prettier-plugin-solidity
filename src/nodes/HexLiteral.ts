@@ -1,16 +1,16 @@
-const {
-  doc: {
-    builders: { join, line }
-  }
-} = require('prettier');
+import { doc } from 'prettier';
+import { printString } from '../common/util';
 
-const { printString } = require('../common/util');
+import type { HexLiteralWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
 
-const HexLiteral = {
+const { join, line } = doc.builders;
+
+export const HexLiteral: NodePrinter = {
   print: ({ node, options }) => {
-    const list = node.parts.map((part) => `hex${printString(part, options)}`);
+    const list = (node as HexLiteralWithComments).parts.map(
+      (part) => `hex${printString(part, options)}`
+    );
     return join(line, list);
   }
 };
-
-module.exports = HexLiteral;

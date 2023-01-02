@@ -31,10 +31,7 @@ function printIndentableBlockComment(comment: Comment) {
   ];
 }
 
-export default function printComment(
-  commentPath: AstPath,
-  options: ParserOptions
-) {
+export function printComment(commentPath: AstPath, options: ParserOptions) {
   const comment = commentPath.getValue();
 
   switch (comment.type) {

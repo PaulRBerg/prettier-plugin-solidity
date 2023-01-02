@@ -1,12 +1,18 @@
-const {
-  doc: {
-    builders: { group, indentIfBreak, label, line, softline }
-  }
-} = require('prettier');
+import { doc } from 'prettier';
+import { printSeparatedList } from '../common/printer-helpers';
+import { isLabel, GroupWithId, LabelWithLabel } from '../common/util';
 
-const { printSeparatedList } = require('../common/printer-helpers');
+import type { AstPath, Doc, ParserOptions } from 'prettier';
+import type { FunctionCallWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
 
-const printObject = (path, print, options) => {
+const { group, indentIfBreak, label, line, softline } = doc.builders;
+
+const printObject = (
+  path: AstPath,
+  print: (ast: AstPath) => Doc,
+  options: ParserOptions
+) => {
   const identifiers = path.map(print, 'identifiers');
   return [
     '{',
@@ -22,19 +28,26 @@ const printObject = (path, print, options) => {
   ];
 };
 
-const printArguments = (path, print) =>
+const printArguments = (path: AstPath, print: (ast: AstPath) => Doc) =>
   printSeparatedList(path.map(print, 'arguments'), {
     lastSeparator: [softline, ')']
   });
 
 let groupIndex = 0;
-const FunctionCall = {
+
+export const FunctionCall: NodePrinter = {
   print: ({ node, path, print, options }) => {
     let expressionDoc = path.call(print, 'expression');
-    let argumentsDoc = ')';
+    let argumentsDoc: Doc = ')';
 
-    if (node.arguments && node.arguments.length > 0) {
-      if (node.identifiers && node.identifiers.length > 0) {
+    if (
+      (node as FunctionCallWithComments).arguments &&
+      (node as FunctionCallWithComments).arguments.length > 0
+    ) {
+      if (
+        (node as FunctionCallWithComments).identifiers &&
+        (node as FunctionCallWithComments).identifiers.length > 0
+      ) {
         argumentsDoc = printObject(path, print, options);
       } else {
         argumentsDoc = printArguments(path, print);
@@ -43,15 +56,18 @@ const FunctionCall = {
 
     // If we are at the end of a MemberAccessChain we should indent the
     // arguments accordingly.
-    if (expressionDoc.label === 'MemberAccessChain') {
-      expressionDoc = group(expressionDoc.contents, {
-        id: `FunctionCall.expression-${groupIndex}`
+    if (
+      isLabel(expressionDoc) &&
+      (expressionDoc as LabelWithLabel).label === 'MemberAccessChain'
+    ) {
+      expressionDoc = group((expressionDoc as LabelWithLabel).contents, {
+        id: Symbol(`FunctionCall.expression-${groupIndex}`)
       });
 
       groupIndex += 1;
 
       argumentsDoc = indentIfBreak(argumentsDoc, {
-        groupId: expressionDoc.id
+        groupId: (expressionDoc as GroupWithId).id as symbol
       });
       // We wrap the expression in a label in case there is an IndexAccess or
       // a FunctionCall following this IndexAccess.
@@ -61,5 +77,3 @@ const FunctionCall = {
     return [expressionDoc, '(', argumentsDoc];
   }
 };
-
-module.exports = FunctionCall;

@@ -1,4 +1,6 @@
-const Mapping = {
+import type { NodePrinter } from '../types';
+
+export const Mapping: NodePrinter = {
   print: ({ path, print }) => [
     'mapping(',
     path.call(print, 'keyType'),
@@ -7,5 +9,3 @@ const Mapping = {
     ')'
   ]
 };
-
-module.exports = Mapping;

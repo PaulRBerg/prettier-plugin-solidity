@@ -1,28 +1,39 @@
-const {
-  doc: {
-    builders: { group, indent, line }
-  }
-} = require('prettier');
+import { doc } from 'prettier';
+import { printSeparatedList } from '../common/printer-helpers';
 
-const { printSeparatedList } = require('../common/printer-helpers');
+import type { AstPath, Doc } from 'prettier';
+import type {
+  VariableDeclarationWithComments,
+  StateVariableDeclarationVariableWithComments
+} from '../ast-types';
+import type { NodePrinter } from '../types';
 
-const indexed = (node) => (node.isIndexed ? ' indexed' : '');
+const { group, indent, line } = doc.builders;
 
-const visibility = (node) =>
+const indexed = (node: VariableDeclarationWithComments) =>
+  node.isIndexed ? ' indexed' : '';
+
+const visibility = (node: VariableDeclarationWithComments) =>
   node.visibility && node.visibility !== 'default'
     ? [line, node.visibility]
     : '';
 
-const constantKeyword = (node) => (node.isDeclaredConst ? ' constant' : '');
+const constantKeyword = (node: VariableDeclarationWithComments) =>
+  node.isDeclaredConst ? ' constant' : '';
 
-const storageLocation = (node) =>
+const storageLocation = (node: VariableDeclarationWithComments) =>
   node.storageLocation && node.visibility !== 'default'
     ? [line, node.storageLocation]
     : '';
 
-const immutable = (node) => (node.isImmutable ? ' immutable' : '');
+const immutable = (node: StateVariableDeclarationVariableWithComments) =>
+  node.isImmutable ? ' immutable' : '';
 
-const override = (node, path, print) => {
+const override = (
+  node: StateVariableDeclarationVariableWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc
+) => {
   if (!node.override) return '';
   if (node.override.length === 0) return [line, 'override'];
   return [
@@ -33,24 +44,27 @@ const override = (node, path, print) => {
   ];
 };
 
-const name = (node) => (node.name ? [' ', node.name] : '');
+const name = (node: VariableDeclarationWithComments) =>
+  node.name ? [' ', node.name] : '';
 
-const VariableDeclaration = {
+export const VariableDeclaration: NodePrinter = {
   print: ({ node, path, print }) =>
-    node.typeName
+    (node as VariableDeclarationWithComments).typeName
       ? group([
           path.call(print, 'typeName'),
           indent([
-            indexed(node),
-            visibility(node),
-            constantKeyword(node),
-            storageLocation(node),
-            immutable(node),
-            override(node, path, print),
-            name(node)
+            indexed(node as VariableDeclarationWithComments),
+            visibility(node as VariableDeclarationWithComments),
+            constantKeyword(node as VariableDeclarationWithComments),
+            storageLocation(node as VariableDeclarationWithComments),
+            immutable(node as StateVariableDeclarationVariableWithComments),
+            override(
+              node as StateVariableDeclarationVariableWithComments,
+              path,
+              print
+            ),
+            name(node as VariableDeclarationWithComments)
           ])
         ])
-      : node.name
+      : ((node as VariableDeclarationWithComments).name as string)
 };
-
-module.exports = VariableDeclaration;

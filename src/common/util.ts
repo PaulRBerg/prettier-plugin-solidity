@@ -1,13 +1,26 @@
-import { util, version } from 'prettier';
+import { doc, util, version } from 'prettier';
 import satisfies from 'semver/functions/satisfies';
 
-import type { Options } from 'prettier';
+import type { Doc, Options } from 'prettier';
 import type { ASTNodeWithComments } from '../ast-types';
 
 const { getNextNonSpaceNonCommentCharacterIndex, makeString } = util;
 
 export function prettierVersionSatisfies(range: string): boolean {
   return satisfies(version, range);
+}
+
+export interface LabelWithLabel extends doc.builders.Label {
+  label: string;
+  contents: Doc[];
+}
+
+export function isLabel(expressionDoc: Doc): boolean {
+  return (expressionDoc as LabelWithLabel).label !== undefined;
+}
+
+export interface GroupWithId extends doc.builders.Group {
+  id?: symbol;
 }
 
 export function getNextNonSpaceNonCommentCharacter(

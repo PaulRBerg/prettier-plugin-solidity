@@ -1,20 +1,25 @@
 /* eslint-disable consistent-return */
-const printers = require('../binary-operator-printers');
+import printers from '../binary-operator-printers';
 
-const BinaryOperation = {
-  print: ({ node, path, print, options }) => {
-    const binaryOperationPrinter = Object.values(printers).find((printer) =>
-      printer.match(node.operator)
+import type { BinaryOperationWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
+
+export const BinaryOperation: NodePrinter = {
+  print: ({ node, path, print }) => {
+    const binaryOperationPrinter = printers.find((printer) =>
+      printer.match((node as BinaryOperationWithComments).operator)
     );
     if (binaryOperationPrinter === undefined) {
       throw new Error(
         `Assertion error: no printer found for operator ${JSON.stringify(
-          node.operator
+          (node as BinaryOperationWithComments).operator
         )}`
       );
     }
-    return binaryOperationPrinter.print(node, path, print, options);
+    return binaryOperationPrinter.print(
+      node as BinaryOperationWithComments,
+      path,
+      print
+    );
   }
 };
-
-module.exports = BinaryOperation;

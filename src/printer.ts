@@ -1,9 +1,10 @@
-const nodes = require('./nodes');
-const {
-  hasNodeIgnoreComment,
-  prettierVersionSatisfies
-} = require('./common/util');
-const ignoreComments = require('./comments/ignore');
+import nodes from './nodes';
+import { hasNodeIgnoreComment, prettierVersionSatisfies } from './common/util';
+import { ignoreComments } from './comments/ignore';
+
+import type { AstPath, ParserOptions, Doc } from 'prettier';
+import type { ASTNodeWithComments } from './ast-types';
+import type { NodePrinterArguments } from './types';
 
 let checked = false;
 
@@ -17,10 +18,14 @@ function prettierVersionCheck() {
   checked = true;
 }
 
-function genericPrint(path, options, print) {
+export default function genericPrint(
+  path: AstPath,
+  options: ParserOptions,
+  print: (path: AstPath) => Doc
+) {
   prettierVersionCheck();
 
-  const node = path.getValue();
+  const node = path.getValue() as ASTNodeWithComments;
   if (node === null) {
     return '';
   }
@@ -38,7 +43,10 @@ function genericPrint(path, options, print) {
     );
   }
 
-  return nodes[node.type].print({ node, options, path, print });
+  return nodes[node.type].print({
+    node,
+    options,
+    path,
+    print
+  } as NodePrinterArguments);
 }
-
-module.exports = { print: genericPrint };

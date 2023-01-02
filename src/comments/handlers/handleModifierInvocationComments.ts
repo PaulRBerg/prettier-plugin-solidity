@@ -58,7 +58,7 @@ function handleModifierInvocationComments({
     // comment, we assume there's an explicit reason for it to be placed there
     // so we respect it here.
     //    function a() public modifier(/* block comment */)
-    addDanglingComment(enclosingNode, comment);
+    addDanglingComment(enclosingNode, comment, false);
     return true;
   }
 

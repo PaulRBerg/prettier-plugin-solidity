@@ -1,5 +1,5 @@
-const ThrowStatement = {
+import type { NodePrinter } from '../types';
+
+export const ThrowStatement: NodePrinter = {
   print: () => 'throw;'
 };
-
-module.exports = ThrowStatement;

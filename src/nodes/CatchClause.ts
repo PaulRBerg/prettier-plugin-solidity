@@ -1,6 +1,14 @@
 const { printSeparatedList } = require('../common/printer-helpers');
 
-const parameters = (node, path, print) =>
+import type { AstPath, Doc } from 'prettier';
+import type { CatchClauseWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
+
+const parameters = (
+  node: CatchClauseWithComments,
+  path: AstPath,
+  print: (path: AstPath) => Doc
+) =>
   node.parameters
     ? [
         node.kind || '',
@@ -10,12 +18,10 @@ const parameters = (node, path, print) =>
       ]
     : '';
 
-const CatchClause = {
+export const CatchClause: NodePrinter = {
   print: ({ node, path, print }) => [
     'catch ',
-    parameters(node, path, print),
+    parameters(node as CatchClauseWithComments, path, print),
     path.call(print, 'body')
   ]
 };
-
-module.exports = CatchClause;

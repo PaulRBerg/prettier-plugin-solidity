@@ -1,5 +1,7 @@
-const BooleanLiteral = {
-  print: ({ node }) => (node.value ? 'true' : 'false')
-};
+import type { BooleanLiteralWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
 
-module.exports = BooleanLiteral;
+export const BooleanLiteral: NodePrinter = {
+  print: ({ node }) =>
+    (node as BooleanLiteralWithComments).value ? 'true' : 'false'
+};

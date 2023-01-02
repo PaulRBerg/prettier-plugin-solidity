@@ -8,7 +8,7 @@ import handlers from './handlers';
 import type { PrettierComment } from '../types';
 import type { HandlerArguments } from './comment-types';
 
-function solidityHandleOwnLineComment(
+export function solidityHandleOwnLineComment(
   comment: PrettierComment,
   text: string,
   options: ParserOptions,
@@ -34,7 +34,7 @@ function solidityHandleOwnLineComment(
   return false;
 }
 
-function solidityHandleEndOfLineComment(
+export function solidityHandleEndOfLineComment(
   comment: PrettierComment,
   text: string,
   options: ParserOptions,
@@ -60,7 +60,7 @@ function solidityHandleEndOfLineComment(
   return false;
 }
 
-function solidityHandleRemainingComment(
+export function solidityHandleRemainingComment(
   comment: PrettierComment,
   text: string,
   options: ParserOptions,
@@ -86,13 +86,6 @@ function solidityHandleRemainingComment(
   return false;
 }
 
-function isBlockComment(comment: PrettierComment) {
+export function isBlockComment(comment: PrettierComment) {
   return comment.type === 'BlockComment';
 }
-
-export default {
-  handleOwnLineComment: solidityHandleOwnLineComment,
-  handleEndOfLineComment: solidityHandleEndOfLineComment,
-  handleRemainingComment: solidityHandleRemainingComment,
-  isBlockComment
-};

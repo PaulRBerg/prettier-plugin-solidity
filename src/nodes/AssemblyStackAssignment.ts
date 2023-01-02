@@ -1,9 +1,10 @@
-const AssemblyStackAssignment = {
+import type { AssemblyStackAssignmentWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
+
+export const AssemblyStackAssignment: NodePrinter = {
   print: ({ node, path, print }) => [
     path.call(print, 'expression'),
     ' =: ',
-    node.name
+    (node as AssemblyStackAssignmentWithComments).name
   ]
 };
-
-module.exports = AssemblyStackAssignment;

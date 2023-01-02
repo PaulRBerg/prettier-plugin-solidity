@@ -1,20 +1,26 @@
-const { printSeparatedList } = require('../common/printer-helpers');
+import { printSeparatedList } from '../common/printer-helpers';
 
-const parameters = (node, path, print) =>
+import type { AstPath, Doc } from 'prettier';
+import type { EventDefinitionWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
+
+const parameters = (
+  node: EventDefinitionWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc
+) =>
   node.parameters && node.parameters.length > 0
     ? printSeparatedList(path.map(print, 'parameters'))
     : '';
 
-const EventDefinition = {
+export const EventDefinition: NodePrinter = {
   print: ({ node, path, print }) => [
     'event ',
-    node.name,
+    (node as EventDefinitionWithComments).name,
     '(',
-    parameters(node, path, print),
+    parameters(node as EventDefinitionWithComments, path, print),
     ')',
-    node.isAnonymous ? ' anonymous' : '',
+    (node as EventDefinitionWithComments).isAnonymous ? ' anonymous' : '',
     ';'
   ]
 };
-
-module.exports = EventDefinition;

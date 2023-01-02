@@ -49,7 +49,7 @@ export function handleContractDefinitionComments({
   // When the contract is empty and contain comments.
   // Most likely disabling a linter rule.
   if (enclosingNode.subNodes.length === 0) {
-    addDanglingComment(enclosingNode, comment);
+    addDanglingComment(enclosingNode, comment, false);
     return true;
   }
 

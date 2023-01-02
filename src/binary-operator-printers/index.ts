@@ -6,7 +6,7 @@ import exponentiation from './exponentiation';
 import logical from './logical';
 import shift from './shift';
 
-export default {
+export default [
   arithmetic,
   assignment,
   bit,
@@ -14,4 +14,4 @@ export default {
   exponentiation,
   logical,
   shift
-};
+];

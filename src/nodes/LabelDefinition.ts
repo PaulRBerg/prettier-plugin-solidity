@@ -1,11 +1,14 @@
-const {
-  doc: {
-    builders: { dedent, line }
-  }
-} = require('prettier');
+import { doc } from 'prettier';
 
-const LabelDefinition = {
-  print: ({ node }) => [dedent(line), node.name, ':']
+import type { LabelDefinitionWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
+
+const { dedent, line } = doc.builders;
+
+export const LabelDefinition: NodePrinter = {
+  print: ({ node }) => [
+    dedent(line),
+    (node as LabelDefinitionWithComments).name,
+    ':'
+  ]
 };
-
-module.exports = LabelDefinition;

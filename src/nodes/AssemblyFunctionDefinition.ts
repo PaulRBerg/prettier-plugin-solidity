@@ -1,22 +1,23 @@
-const {
-  doc: {
-    builders: { line }
-  }
-} = require('prettier');
-
-const {
+import { doc } from 'prettier';
+import {
   printSeparatedItem,
   printSeparatedList
-} = require('../common/printer-helpers');
+} from '../common/printer-helpers';
 
-const AssemblyFunctionDefinition = {
+import type { AssemblyFunctionDefinitionWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
+
+const { line } = doc.builders;
+
+export const AssemblyFunctionDefinition: NodePrinter = {
   print: ({ node, path, print }) => [
     'function ',
-    node.name,
+    (node as AssemblyFunctionDefinitionWithComments).name,
     '(',
     printSeparatedList(path.map(print, 'arguments')),
     ')',
-    node.returnArguments.length === 0
+    (node as AssemblyFunctionDefinitionWithComments).returnArguments.length ===
+    0
       ? ' '
       : printSeparatedItem(
           [
@@ -31,5 +32,3 @@ const AssemblyFunctionDefinition = {
     path.call(print, 'body')
   ]
 };
-
-module.exports = AssemblyFunctionDefinition;

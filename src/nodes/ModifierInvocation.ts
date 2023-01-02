@@ -1,9 +1,15 @@
-const {
-  printComments,
-  printSeparatedList
-} = require('../common/printer-helpers');
+import { printComments, printSeparatedList } from '../common/printer-helpers';
 
-const modifierArguments = (node, path, print, options) => {
+import type { AstPath, Doc, ParserOptions } from 'prettier';
+import type { ModifierInvocationWithComments } from '../ast-types';
+import type { NodePrinter, PrettierComment } from '../types';
+
+const modifierArguments = (
+  node: ModifierInvocationWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc,
+  options: ParserOptions
+) => {
   if (node.arguments) {
     // We always print parentheses at this stage because the parser already
     // stripped them in FunctionDefinitions that are not a constructor.
@@ -11,10 +17,10 @@ const modifierArguments = (node, path, print, options) => {
       ? ['(', printSeparatedList(path.map(print, 'arguments')), ')']
       : '()';
   }
-
+  const comments = node.comments as PrettierComment[];
   if (
-    node.comments &&
-    node.comments.some(
+    comments &&
+    comments.some(
       (comment) => !comment.leading && !comment.trailing && !comment.printed
     )
   ) {
@@ -27,11 +33,14 @@ const modifierArguments = (node, path, print, options) => {
   return '';
 };
 
-const ModifierInvocation = {
+export const ModifierInvocation: NodePrinter = {
   print: ({ node, path, print, options }) => [
-    node.name,
-    modifierArguments(node, path, print, options)
+    (node as ModifierInvocationWithComments).name,
+    modifierArguments(
+      node as ModifierInvocationWithComments,
+      path,
+      print,
+      options
+    )
   ]
 };
-
-module.exports = ModifierInvocation;

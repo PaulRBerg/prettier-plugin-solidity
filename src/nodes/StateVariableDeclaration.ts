@@ -1,10 +1,16 @@
-const {
-  doc: {
-    builders: { group, indent, line }
-  }
-} = require('prettier');
+import { doc } from 'prettier';
 
-const initialValue = (node, path, print) => {
+import type { AstPath, Doc } from 'prettier';
+import type { StateVariableDeclarationWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
+
+const { group, indent, line } = doc.builders;
+
+const initialValue = (
+  node: StateVariableDeclarationWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc
+) => {
   if (!node.initialValue) {
     return '';
   }
@@ -16,12 +22,10 @@ const initialValue = (node, path, print) => {
   return group([' =', indent([line, path.call(print, 'initialValue')])]);
 };
 
-const StateVariableDeclaration = {
+export const StateVariableDeclaration: NodePrinter = {
   print: ({ node, path, print }) => [
     ...path.map(print, 'variables'),
-    initialValue(node, path, print),
+    initialValue(node as StateVariableDeclarationWithComments, path, print),
     ';'
   ]
 };
-
-module.exports = StateVariableDeclaration;

@@ -1,17 +1,22 @@
-const {
-  doc: {
-    builders: { group, line, hardline }
-  }
-} = require('prettier');
-
-const {
+import { doc } from 'prettier';
+import {
   printComments,
   printPreservingEmptyLines,
   printSeparatedItem,
   printSeparatedList
-} = require('../common/printer-helpers');
+} from '../common/printer-helpers';
 
-const inheritance = (node, path, print) =>
+import type { AstPath, Doc, ParserOptions } from 'prettier';
+import type { ContractDefinitionWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
+
+const { group, line, hardline } = doc.builders;
+
+const inheritance = (
+  node: ContractDefinitionWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc
+) =>
   node.baseContracts.length > 0
     ? [
         ' is',
@@ -21,7 +26,12 @@ const inheritance = (node, path, print) =>
       ]
     : line;
 
-const body = (node, path, options, print) =>
+const body = (
+  node: ContractDefinitionWithComments,
+  path: AstPath,
+  options: ParserOptions,
+  print: (ast: AstPath) => Doc
+) =>
   node.subNodes.length > 0 || node.comments
     ? printSeparatedItem(
         [
@@ -32,18 +42,18 @@ const body = (node, path, options, print) =>
       )
     : '';
 
-const ContractDefinition = {
+export const ContractDefinition: NodePrinter = {
   print: ({ node, options, path, print }) => [
     group([
-      node.kind === 'abstract' ? 'abstract contract' : node.kind,
+      (node as ContractDefinitionWithComments).kind === 'abstract'
+        ? 'abstract contract'
+        : (node as ContractDefinitionWithComments).kind,
       ' ',
-      node.name,
-      inheritance(node, path, print),
+      (node as ContractDefinitionWithComments).name,
+      inheritance(node as ContractDefinitionWithComments, path, print),
       '{'
     ]),
-    body(node, path, options, print),
+    body(node as ContractDefinitionWithComments, path, options, print),
     '}'
   ]
 };
-
-module.exports = ContractDefinition;

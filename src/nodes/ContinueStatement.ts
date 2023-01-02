@@ -1,5 +1,5 @@
-const ContinueStatement = {
+import type { NodePrinter } from '../types';
+
+export const ContinueStatement: NodePrinter = {
   print: () => 'continue;'
 };
-
-module.exports = ContinueStatement;

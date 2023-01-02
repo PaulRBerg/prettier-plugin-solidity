@@ -1,27 +1,31 @@
-const {
-  doc: {
-    builders: { line, softline }
-  }
-} = require('prettier');
+import { doc } from 'prettier';
+import { printSeparatedList } from '../common/printer-helpers';
 
-const { printSeparatedList } = require('../common/printer-helpers');
+import type { UsingForDeclarationWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
 
-const UsingForDeclaration = {
+const { line, softline } = doc.builders;
+
+export const UsingForDeclaration: NodePrinter = {
   print: ({ node, path, print, options }) => [
     'using ',
-    node.functions && node.functions.length
+    (node as UsingForDeclarationWithComments).functions &&
+    (node as UsingForDeclarationWithComments).functions.length
       ? [
           '{',
-          printSeparatedList(node.functions, {
-            firstSeparator: options.bracketSpacing ? line : softline
-          }),
+          printSeparatedList(
+            (node as UsingForDeclarationWithComments).functions,
+            {
+              firstSeparator: options.bracketSpacing ? line : softline
+            }
+          ),
           '}'
         ]
-      : node.libraryName,
+      : ((node as UsingForDeclarationWithComments).libraryName as string),
     ' for ',
-    node.typeName ? path.call(print, 'typeName') : '*',
-    node.isGlobal ? ' global;' : ';'
+    (node as UsingForDeclarationWithComments).typeName
+      ? path.call(print, 'typeName')
+      : '*',
+    (node as UsingForDeclarationWithComments).isGlobal ? ' global;' : ';'
   ]
 };
-
-module.exports = UsingForDeclaration;

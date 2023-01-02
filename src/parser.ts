@@ -3,6 +3,7 @@ import extractComments from 'solidity-comments-extractor';
 import * as parser from '@solidity-parser/parser';
 import coerce from 'semver/functions/coerce';
 import satisfies from 'semver/functions/satisfies';
+
 import type { Parser } from 'prettier';
 import type { BinOp } from '@solidity-parser/parser/src/ast-types';
 import type {
@@ -23,7 +24,7 @@ const tryHug = (node: ExpressionWithComments, operators: BinOp[]) => {
   return node;
 };
 
-function parse(
+export default function parse(
   text: string,
   _parsers: Parser[] | PrettierParserOptions,
   options = _parsers as PrettierParserOptions
@@ -193,5 +194,3 @@ function parse(
 
   return parsed;
 }
-
-module.exports = { parse };

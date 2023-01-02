@@ -1,15 +1,20 @@
-const {
-  doc: {
-    builders: { join, line }
-  }
-} = require('prettier');
-
-const {
+import { doc } from 'prettier';
+import {
   printSeparatedItem,
   printSeparatedList
-} = require('../common/printer-helpers');
+} from '../common/printer-helpers';
 
-const returnParameters = (node, path, print) =>
+import type { AstPath, Doc } from 'prettier';
+import type { TryStatementWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
+
+const { join, line } = doc.builders;
+
+const returnParameters = (
+  node: TryStatementWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc
+) =>
   node.returnParameters
     ? [
         'returns (',
@@ -18,7 +23,7 @@ const returnParameters = (node, path, print) =>
       ]
     : '';
 
-const TryStatement = {
+export const TryStatement: NodePrinter = {
   print: ({ node, path, print }) => {
     let parts = [
       'try',
@@ -27,7 +32,11 @@ const TryStatement = {
       })
     ];
 
-    const formattedReturnParameters = returnParameters(node, path, print);
+    const formattedReturnParameters = returnParameters(
+      node as TryStatementWithComments,
+      path,
+      print
+    );
     if (formattedReturnParameters) {
       parts = parts.concat([formattedReturnParameters, ' ']);
     }
@@ -41,5 +50,3 @@ const TryStatement = {
     return parts;
   }
 };
-
-module.exports = TryStatement;

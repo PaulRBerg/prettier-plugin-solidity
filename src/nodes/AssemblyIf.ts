@@ -1,4 +1,6 @@
-const AssemblyIf = {
+import type { NodePrinter } from '../types';
+
+export const AssemblyIf: NodePrinter = {
   print: ({ path, print }) => [
     'if ',
     path.call(print, 'condition'),
@@ -6,5 +8,3 @@ const AssemblyIf = {
     path.call(print, 'body')
   ]
 };
-
-module.exports = AssemblyIf;

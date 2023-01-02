@@ -1,14 +1,17 @@
-const {
-  doc: {
-    builders: { group, indent, indentIfBreak, label, softline }
-  }
-} = require('prettier');
+import { doc } from 'prettier';
+import { isLabel, GroupWithId, LabelWithLabel } from '../common/util';
+
+import type { Doc } from 'prettier';
+import type { NodePrinter } from '../types';
+
+const { group, indent, indentIfBreak, label, softline } = doc.builders;
 
 let groupIndex = 0;
-const IndexAccess = {
+
+export const IndexAccess: NodePrinter = {
   print: ({ path, print }) => {
     let baseDoc = path.call(print, 'base');
-    let indexDoc = group([
+    let indexDoc: Doc = group([
       indent([softline, path.call(print, 'index')]),
       softline,
       ']'
@@ -16,15 +19,18 @@ const IndexAccess = {
 
     // If we are at the end of a MemberAccessChain we should indent the
     // arguments accordingly.
-    if (baseDoc.label === 'MemberAccessChain') {
-      baseDoc = group(baseDoc.contents, {
-        id: `IndexAccess.base-${groupIndex}`
+    if (
+      isLabel(baseDoc) &&
+      (baseDoc as LabelWithLabel).label === 'MemberAccessChain'
+    ) {
+      baseDoc = group((baseDoc as LabelWithLabel).contents, {
+        id: Symbol(`IndexAccess.base-${groupIndex}`)
       });
 
       groupIndex += 1;
 
       indexDoc = indentIfBreak(indexDoc, {
-        groupId: baseDoc.id
+        groupId: (baseDoc as GroupWithId).id as symbol
       });
       // We wrap the expression in a label in case there is an IndexAccess or
       // a FunctionCall following this IndexAccess.
@@ -34,5 +40,3 @@ const IndexAccess = {
     return [baseDoc, '[', indexDoc];
   }
 };
-
-module.exports = IndexAccess;

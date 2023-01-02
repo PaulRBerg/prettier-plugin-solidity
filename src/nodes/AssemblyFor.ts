@@ -1,10 +1,9 @@
-const {
-  doc: {
-    builders: { join }
-  }
-} = require('prettier');
+import { doc } from 'prettier';
+import type { NodePrinter } from '../types';
 
-const AssemblyFor = {
+const { join } = doc.builders;
+
+export const AssemblyFor: NodePrinter = {
   print: ({ path, print }) =>
     join(' ', [
       'for',
@@ -14,5 +13,3 @@ const AssemblyFor = {
       path.call(print, 'body')
     ])
 };
-
-module.exports = AssemblyFor;

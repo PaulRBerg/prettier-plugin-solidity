@@ -7,6 +7,6 @@ export interface BinaryOperationPrinter {
   print: (
     node: BinaryOperationWithComments,
     path: AstPath,
-    print: Printer
+    print: (path: AstPath) => Doc
   ) => Doc;
 }

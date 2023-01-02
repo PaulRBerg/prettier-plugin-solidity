@@ -1,5 +1,6 @@
-const Identifier = {
-  print: ({ node }) => node.name
-};
+import type { IdentifierWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
 
-module.exports = Identifier;
+export const Identifier: NodePrinter = {
+  print: ({ node }) => (node as IdentifierWithComments).name
+};

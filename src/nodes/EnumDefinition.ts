@@ -1,16 +1,16 @@
-const {
-  doc: {
-    builders: { group, hardline }
-  }
-} = require('prettier');
+import { doc } from 'prettier';
+import { printSeparatedList } from '../common/printer-helpers';
 
-const { printSeparatedList } = require('../common/printer-helpers');
+import type { EnumDefinitionWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
 
-const EnumDefinition = {
+const { group, hardline } = doc.builders;
+
+export const EnumDefinition: NodePrinter = {
   print: ({ node, path, print }) =>
     group([
       'enum ',
-      node.name,
+      (node as EnumDefinitionWithComments).name,
       ' {',
       printSeparatedList(path.map(print, 'members'), {
         firstSeparator: hardline
@@ -18,5 +18,3 @@ const EnumDefinition = {
       '}'
     ])
 };
-
-module.exports = EnumDefinition;

@@ -1,25 +1,29 @@
-const {
-  doc: {
-    builders: { group }
-  }
-} = require('prettier');
+import { doc } from 'prettier';
+import { printSeparatedList } from '../common/printer-helpers';
 
-const { printSeparatedList } = require('../common/printer-helpers');
+import type { AstPath, Doc } from 'prettier';
+import type { BaseASTNode } from '@solidity-parser/parser/src/ast-types';
+import type { TupleExpressionWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
 
-const contents = (node, path, print) =>
+const { group } = doc.builders;
+
+const contents = (
+  node: TupleExpressionWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc
+) =>
   node.components &&
   node.components.length === 1 &&
-  node.components[0].type === 'BinaryOperation'
+  (node.components[0] as BaseASTNode).type === 'BinaryOperation'
     ? path.map(print, 'components')
     : [printSeparatedList(path.map(print, 'components'))];
 
-const TupleExpression = {
+export const TupleExpression: NodePrinter = {
   print: ({ node, path, print }) =>
     group([
-      node.isArray ? '[' : '(',
-      ...contents(node, path, print),
-      node.isArray ? ']' : ')'
+      (node as TupleExpressionWithComments).isArray ? '[' : '(',
+      ...contents(node as TupleExpressionWithComments, path, print),
+      (node as TupleExpressionWithComments).isArray ? ']' : ')'
     ])
 };
-
-module.exports = TupleExpression;

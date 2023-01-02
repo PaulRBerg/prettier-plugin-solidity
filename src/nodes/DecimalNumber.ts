@@ -1,5 +1,6 @@
-const DecimalNumber = {
-  print: ({ node }) => node.value
-};
+import type { DecimalNumberWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
 
-module.exports = DecimalNumber;
+export const DecimalNumber: NodePrinter = {
+  print: ({ node }) => (node as DecimalNumberWithComments).value
+};

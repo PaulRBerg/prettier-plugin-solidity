@@ -1,17 +1,21 @@
-const {
-  doc: {
-    builders: { dedent, group, indent, join, line }
-  },
-  util: { getNextNonSpaceNonCommentCharacterIndex }
-} = require('prettier');
-
-const {
+import { doc } from 'prettier';
+import {
   printComments,
   printSeparatedItem,
   printSeparatedList
-} = require('../common/printer-helpers');
+} from '../common/printer-helpers';
+import { getNextNonSpaceNonCommentCharacter } from '../common/util';
 
-const functionName = (node, options) => {
+import type { AstPath, Doc, ParserOptions } from 'prettier';
+import type { FunctionDefinitionWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
+
+const { dedent, group, indent, join, line } = doc.builders;
+
+const functionName = (
+  node: FunctionDefinitionWithComments,
+  options: ParserOptions
+) => {
   if (node.isConstructor && !node.name) return 'constructor';
   if (node.name) return `function ${node.name}`;
   if (node.isReceiveEther) return 'receive';
@@ -24,12 +28,19 @@ const functionName = (node, options) => {
   const name = options.originalText.slice(
     options.locStart(node),
     options.locStart(node) + 8
-  );
+  ) as 'fallback' | 'function';
   return names[name];
 };
 
-const parameters = (parametersType, node, path, print, options) => {
-  if (node[parametersType] && node[parametersType].length > 0) {
+const parameters = (
+  parametersType: 'parameters' | 'returnParameters',
+  node: FunctionDefinitionWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc,
+  options: ParserOptions
+) => {
+  const parametersArray = node[parametersType];
+  if (parametersArray && parametersArray.length > 0) {
     return printSeparatedList(path.map(print, parametersType), {
       grouped: false
     });
@@ -41,14 +52,12 @@ const parameters = (parametersType, node, path, print, options) => {
       path,
       options,
       (comment) =>
-        options.originalText.charAt(
-          getNextNonSpaceNonCommentCharacterIndex(
-            options.originalText,
-            comment,
-            options.locEnd
-          )
+        getNextNonSpaceNonCommentCharacter(
+          options.originalText,
+          comment,
+          options.locEnd
         ) === ')'
-    );
+    ) as Doc[];
     return parameterComments.length > 0
       ? printSeparatedItem(parameterComments)
       : '';
@@ -56,14 +65,19 @@ const parameters = (parametersType, node, path, print, options) => {
   return '';
 };
 
-const visibility = (node) =>
+const visibility = (node: FunctionDefinitionWithComments) =>
   node.visibility && node.visibility !== 'default'
     ? [line, node.visibility]
     : '';
 
-const virtual = (node) => (node.isVirtual ? [line, 'virtual'] : '');
+const virtual = (node: FunctionDefinitionWithComments) =>
+  node.isVirtual ? [line, 'virtual'] : '';
 
-const override = (node, path, print) => {
+const override = (
+  node: FunctionDefinitionWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc
+) => {
   if (!node.override) return '';
   if (node.override.length === 0) return [line, 'override'];
   return [
@@ -74,15 +88,24 @@ const override = (node, path, print) => {
   ];
 };
 
-const stateMutability = (node) =>
+const stateMutability = (node: FunctionDefinitionWithComments) =>
   node.stateMutability ? [line, node.stateMutability] : '';
 
-const modifiers = (node, path, print) =>
+const modifiers = (
+  node: FunctionDefinitionWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc
+) =>
   node.modifiers.length > 0
     ? [line, join(line, path.map(print, 'modifiers'))]
     : '';
 
-const returnParameters = (node, path, print, options) =>
+const returnParameters = (
+  node: FunctionDefinitionWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc,
+  options: ParserOptions
+) =>
   node.returnParameters
     ? [
         line,
@@ -92,33 +115,47 @@ const returnParameters = (node, path, print, options) =>
       ]
     : '';
 
-const signatureEnd = (node) => (node.body ? dedent(line) : ';');
+const signatureEnd = (node: FunctionDefinitionWithComments) =>
+  node.body ? dedent(line) : ';';
 
-const body = (node, path, print) => (node.body ? path.call(print, 'body') : '');
+const body = (
+  node: FunctionDefinitionWithComments,
+  path: AstPath,
+  print: (ast: AstPath) => Doc
+) => (node.body ? path.call(print, 'body') : '');
 
-const FunctionDefinition = {
+export const FunctionDefinition: NodePrinter = {
   print: ({ node, path, print, options }) => [
     group([
-      functionName(node, options),
+      functionName(node as FunctionDefinitionWithComments, options),
       '(',
-      parameters('parameters', node, path, print, options),
+      parameters(
+        'parameters',
+        node as FunctionDefinitionWithComments,
+        path,
+        print,
+        options
+      ),
       ')',
       indent(
         group([
           // TODO: sort comments for modifiers and return parameters
           printComments(node, path, options),
-          visibility(node),
-          stateMutability(node),
-          virtual(node),
-          override(node, path, print),
-          modifiers(node, path, print),
-          returnParameters(node, path, print, options),
-          signatureEnd(node)
+          visibility(node as FunctionDefinitionWithComments),
+          stateMutability(node as FunctionDefinitionWithComments),
+          virtual(node as FunctionDefinitionWithComments),
+          override(node as FunctionDefinitionWithComments, path, print),
+          modifiers(node as FunctionDefinitionWithComments, path, print),
+          returnParameters(
+            node as FunctionDefinitionWithComments,
+            path,
+            print,
+            options
+          ),
+          signatureEnd(node as FunctionDefinitionWithComments)
         ])
       )
     ]),
-    body(node, path, print)
+    body(node as FunctionDefinitionWithComments, path, print)
   ]
 };
-
-module.exports = FunctionDefinition;

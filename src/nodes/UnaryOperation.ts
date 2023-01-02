@@ -1,12 +1,16 @@
-const UnaryOperation = {
+import type { UnaryOperationWithComments } from '../ast-types';
+import type { NodePrinter } from '../types';
+
+export const UnaryOperation: NodePrinter = {
   print: ({ node, path, print }) =>
-    node.isPrefix
+    (node as UnaryOperationWithComments).isPrefix
       ? [
-          node.operator,
-          node.operator === 'delete' ? ' ' : '',
+          (node as UnaryOperationWithComments).operator,
+          (node as UnaryOperationWithComments).operator === 'delete' ? ' ' : '',
           path.call(print, 'subExpression')
         ]
-      : [path.call(print, 'subExpression'), node.operator]
+      : [
+          path.call(print, 'subExpression'),
+          (node as UnaryOperationWithComments).operator
+        ]
 };
-
-module.exports = UnaryOperation;
