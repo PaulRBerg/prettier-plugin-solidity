@@ -11,7 +11,7 @@ import type {
   ExpressionWithComments,
   TupleExpressionWithComments
 } from './ast-types';
-import type { PrettierOptions } from './types';
+import type { PrettierParserOptions } from './types';
 
 const tryHug = (node: ExpressionWithComments, operators: BinOp[]) => {
   if (node.type === 'BinaryOperation' && operators.includes(node.operator))
@@ -25,8 +25,8 @@ const tryHug = (node: ExpressionWithComments, operators: BinOp[]) => {
 
 function parse(
   text: string,
-  _parsers: Parser[] | PrettierOptions,
-  options = _parsers as PrettierOptions
+  _parsers: Parser[] | PrettierParserOptions,
+  options = _parsers as PrettierParserOptions
 ) {
   const compiler = coerce(options.compiler);
   const parsed = parser.parse(text, {

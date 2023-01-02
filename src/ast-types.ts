@@ -8,6 +8,8 @@ export interface BaseComment {
   type: CommentTypeString;
   range?: [number, number];
   loc?: Location;
+  raw: string;
+  value: string;
 }
 
 export interface BlockComment extends BaseComment {

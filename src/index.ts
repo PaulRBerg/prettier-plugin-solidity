@@ -1,5 +1,5 @@
 import { handleComments, printComment } from './comments';
-import { massageAstNode } from './clean';
+import massageAstNode from './clean';
 import { locEnd, locStart } from './loc';
 import { options } from './options';
 import { parse } from './parser';

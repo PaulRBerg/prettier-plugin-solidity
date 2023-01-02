@@ -1,13 +1,17 @@
-/* This file was automatically generated on 1666691919.933 */
+import arithmetic from './arithmetic';
+import assignment from './assignment';
+import bit from './bit';
+import comparison from './comparison';
+import exponentiation from './exponentiation';
+import logical from './logical';
+import shift from './shift';
 
-/* eslint-disable global-require */
-
-module.exports = {
-  arithmetic: require('./arithmetic'),
-  assignment: require('./assignment'),
-  bit: require('./bit'),
-  comparison: require('./comparison'),
-  exponentiation: require('./exponentiation'),
-  logical: require('./logical'),
-  shift: require('./shift')
+export default {
+  arithmetic,
+  assignment,
+  bit,
+  comparison,
+  exponentiation,
+  logical,
+  shift
 };

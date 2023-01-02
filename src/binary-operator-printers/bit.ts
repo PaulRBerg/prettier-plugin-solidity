@@ -1,6 +1,7 @@
-const arithmetic = require('./arithmetic');
+import arithmetic from './arithmetic';
+import { BinaryOperationPrinter } from './types';
 
-module.exports = {
+export default {
   match: (op) => ['&', '|', '^'].includes(op),
   print: arithmetic.print
-};
+} as BinaryOperationPrinter;

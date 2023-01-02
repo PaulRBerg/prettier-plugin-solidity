@@ -1,14 +1,13 @@
-const {
-  util: { getNextNonSpaceNonCommentCharacterIndex, makeString },
-  version
-} = require('prettier');
-const satisfies = require('semver/functions/satisfies');
+import { util, version } from 'prettier';
+import satisfies from 'semver/functions/satisfies';
 
-const prettierVersionSatisfies = (range) => satisfies(version, range);
+const { getNextNonSpaceNonCommentCharacterIndex, makeString } = util;
 
-function getNextNonSpaceNonCommentCharacter(text, node, locEnd) {
+const prettierVersionSatisfies = (range: string) => satisfies(version, range);
+
+function getNextNonSpaceNonCommentCharacter(text: string, node: any, locEnd) {
   return text.charAt(
-    getNextNonSpaceNonCommentCharacterIndex(text, node, locEnd)
+    getNextNonSpaceNonCommentCharacterIndex(text, node, locEnd) as number
   );
 }
 

@@ -1,10 +1,11 @@
-const {
-  doc: {
-    builders: { group, line, indent }
-  }
-} = require('prettier');
+import { doc } from 'prettier';
 
-const indentIfNecessaryBuilder = (path) => (doc) => {
+import type { AstPath, Doc } from 'prettier';
+import type { BinaryOperationPrinter } from './types';
+
+const { group, line, indent } = doc.builders;
+
+const indentIfNecessaryBuilder = (path: AstPath) => (doc: Doc) => {
   let node = path.getNode();
   for (let i = 0; ; i += 1) {
     const parentNode = path.getParentNode(i);
@@ -18,12 +19,12 @@ const indentIfNecessaryBuilder = (path) => (doc) => {
   }
 };
 
-module.exports = {
+export default {
   match: (op) => ['<', '>', '<=', '>=', '==', '!='].includes(op),
   print: (node, path, print) => {
     const indentIfNecessary = indentIfNecessaryBuilder(path);
 
-    const right = [node.operator, line, path.call(print, 'right')];
+    const right: Doc = [node.operator, line, path.call(print, 'right')];
     // If it's a single binary operation, avoid having a small right
     // operand like - 1 on its own line
     const shouldGroup =
@@ -35,4 +36,4 @@ module.exports = {
       indentIfNecessary(shouldGroup ? group(right) : right)
     ]);
   }
-};
+} as BinaryOperationPrinter;

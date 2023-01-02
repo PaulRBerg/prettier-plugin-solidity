@@ -1,11 +1,12 @@
-const {
-  doc: {
-    builders: { group, line, indent }
-  }
-} = require('prettier');
-const comparison = require('./comparison');
+import { doc } from 'prettier';
+import comparison from './comparison';
 
-const groupIfNecessaryBuilder = (path) => (doc) => {
+import type { AstPath, Doc } from 'prettier';
+import type { BinaryOperationPrinter } from './types';
+
+const { group, line, indent } = doc.builders;
+
+const groupIfNecessaryBuilder = (path: AstPath) => (doc: Doc) => {
   const parentNode = path.getParentNode();
   if (
     parentNode.type === 'BinaryOperation' &&
@@ -16,7 +17,7 @@ const groupIfNecessaryBuilder = (path) => (doc) => {
   return group(doc);
 };
 
-const indentIfNecessaryBuilder = (path) => (doc) => {
+const indentIfNecessaryBuilder = (path: AstPath) => (doc: Doc) => {
   let node = path.getNode();
   for (let i = 0; ; i += 1) {
     const parentNode = path.getParentNode(i);
@@ -32,13 +33,13 @@ const indentIfNecessaryBuilder = (path) => (doc) => {
   }
 };
 
-module.exports = {
+export default {
   match: (op) => ['+', '-', '*', '/', '%'].includes(op),
   print: (node, path, print) => {
     const groupIfNecessary = groupIfNecessaryBuilder(path);
     const indentIfNecessary = indentIfNecessaryBuilder(path);
 
-    const right = [node.operator, line, path.call(print, 'right')];
+    const right: Doc = [node.operator, line, path.call(print, 'right')];
     // If it's a single binary operation, avoid having a small right
     // operand like - 1 on its own line
     const shouldGroup =
@@ -50,4 +51,4 @@ module.exports = {
       indentIfNecessary(shouldGroup ? group(right) : right)
     ]);
   }
-};
+} as BinaryOperationPrinter;

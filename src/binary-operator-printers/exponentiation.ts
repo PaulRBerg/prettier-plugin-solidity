@@ -1,10 +1,10 @@
-const {
-  doc: {
-    builders: { group, indent, line }
-  }
-} = require('prettier');
+import { doc } from 'prettier';
 
-module.exports = {
+import type { BinaryOperationPrinter } from './types';
+
+const { group, indent, line } = doc.builders;
+
+export default {
   match: (op) => op === '**',
   print: (node, path, print) => {
     const right = [' ', node.operator, line, path.call(print, 'right')];
@@ -18,4 +18,4 @@ module.exports = {
       indent(shouldGroup ? group(right) : right)
     ]);
   }
-};
+} as BinaryOperationPrinter;

@@ -5,4 +5,4 @@ const ignoredProperties = new Set(['loc', 'range', 'comments']);
 function clean(/* ast, newObj, parent */) {}
 clean.ignoredProperties = ignoredProperties;
 
-module.exports = { massageAstNode: clean };
+export default { massageAstNode: clean };
