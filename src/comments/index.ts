@@ -1,4 +1,4 @@
-import handler from './handleComments';
-import printer from './printComments';
+import handler from './handler';
+import printer from './printer';
 
 export default { handleComments: handler, printComments: printer };
