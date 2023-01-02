@@ -1,5 +1,5 @@
 import { BinOp } from '@solidity-parser/parser/src/ast-types';
-import { AstPath, Printer, Doc } from 'prettier';
+import { AstPath, Doc } from 'prettier';
 import { BinaryOperationWithComments } from '../ast-types';
 
 export interface BinaryOperationPrinter {

@@ -1,13 +1,13 @@
 import { doc } from 'prettier';
-import type { NodePrinter } from '../types';
-
-const { hardline } = doc.builders;
-
-const {
+import {
   printComments,
   printPreservingEmptyLines,
   printSeparatedItem
-} = require('../common/printer-helpers');
+} from '../common/printer-helpers';
+
+import type { NodePrinter } from '../types';
+
+const { hardline } = doc.builders;
 
 export const AssemblyBlock: NodePrinter = {
   print: ({ node, options, path, print }) => [

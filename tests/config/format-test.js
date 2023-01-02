@@ -184,7 +184,7 @@ function runSpec(fixtures, parsers, options) {
         plugins: [
           path.join(
             __dirname,
-            TEST_STANDALONE ? "../../dist/standalone.js" : "../../src/index.js"
+            TEST_STANDALONE ? "../../dist/standalone.js" : "../../src/index.ts"
           ),
         ],
         printWidth: 80,

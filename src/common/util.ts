@@ -25,7 +25,7 @@ export interface GroupWithId extends doc.builders.Group {
 
 export function getNextNonSpaceNonCommentCharacter(
   text: string,
-  node: any,
+  node: ASTNodeWithComments,
   locEnd: (node: ASTNodeWithComments) => number
 ) {
   return text.charAt(
