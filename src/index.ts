@@ -60,10 +60,13 @@ const defaultOptions = {
   tabWidth: 4
 };
 
-export default {
+const plugin = {
   languages,
   parsers,
   printers,
   options,
   defaultOptions
 };
+
+export default plugin;
+module.exports = plugin;

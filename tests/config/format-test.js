@@ -180,12 +180,15 @@ function runSpec(fixtures, parsers, options) {
     }`;
 
     describe(title, () => {
+      const plugin = require(path.join(__dirname, "../../dist/standalone.js"));
+
       const formatOptions = {
         plugins: [
-          path.join(
-            __dirname,
-            TEST_STANDALONE ? "../../dist/standalone.js" : "../../src/index.ts"
-          ),
+          plugin,
+          // path.join(
+          //   __dirname,
+          //   TEST_STANDALONE ? "../../dist/standalone.js" : "../../src/index.ts"
+          // ),
         ],
         printWidth: 80,
         // Should not search plugins by default
