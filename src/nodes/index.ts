@@ -1,76 +1,76 @@
 import type { NodePrinter } from '../types';
-import { ArrayTypeName } from './ArrayTypeName';
-import { AssemblyAssignment } from './AssemblyAssignment';
-import { AssemblyBlock } from './AssemblyBlock';
-import { AssemblyCall } from './AssemblyCall';
-import { AssemblyCase } from './AssemblyCase';
-import { AssemblyFor } from './AssemblyFor';
-import { AssemblyFunctionDefinition } from './AssemblyFunctionDefinition';
-import { AssemblyIf } from './AssemblyIf';
-import { AssemblyLocalDefinition } from './AssemblyLocalDefinition';
-import { AssemblyMemberAccess } from './AssemblyMemberAccess';
-import { AssemblyStackAssignment } from './AssemblyStackAssignment';
-import { AssemblySwitch } from './AssemblySwitch';
-import { BinaryOperation } from './BinaryOperation';
-import { Block } from './Block';
-import { BooleanLiteral } from './BooleanLiteral';
-import { Break } from './Break';
-import { BreakStatement } from './BreakStatement';
-import { CatchClause } from './CatchClause';
-import { Conditional } from './Conditional';
-import { Continue } from './Continue';
-import { ContinueStatement } from './ContinueStatement';
-import { ContractDefinition } from './ContractDefinition';
-import { CustomErrorDefinition } from './CustomErrorDefinition';
-import { DecimalNumber } from './DecimalNumber';
-import { DoWhileStatement } from './DoWhileStatement';
-import { ElementaryTypeName } from './ElementaryTypeName';
-import { EmitStatement } from './EmitStatement';
-import { EnumDefinition } from './EnumDefinition';
-import { EnumValue } from './EnumValue';
-import { EventDefinition } from './EventDefinition';
-import { ExpressionStatement } from './ExpressionStatement';
-import { FileLevelConstant } from './FileLevelConstant';
-import { ForStatement } from './ForStatement';
-import { FunctionCall } from './FunctionCall';
-import { FunctionDefinition } from './FunctionDefinition';
-import { FunctionTypeName } from './FunctionTypeName';
-import { HexLiteral } from './HexLiteral';
-import { HexNumber } from './HexNumber';
-import { Identifier } from './Identifier';
-import { IfStatement } from './IfStatement';
-import { ImportDirective } from './ImportDirective';
-import { IndexAccess } from './IndexAccess';
-import { IndexRangeAccess } from './IndexRangeAccess';
-import { InheritanceSpecifier } from './InheritanceSpecifier';
-import { InlineAssemblyStatement } from './InlineAssemblyStatement';
-import { LabelDefinition } from './LabelDefinition';
-import { Mapping } from './Mapping';
-import { MemberAccess } from './MemberAccess';
-import { ModifierDefinition } from './ModifierDefinition';
-import { ModifierInvocation } from './ModifierInvocation';
-import { NameValueExpression } from './NameValueExpression';
-import { NameValueList } from './NameValueList';
-import { NewExpression } from './NewExpression';
-import { NumberLiteral } from './NumberLiteral';
-import { PragmaDirective } from './PragmaDirective';
-import { ReturnStatement } from './ReturnStatement';
-import { RevertStatement } from './RevertStatement';
-import { SourceUnit } from './SourceUnit';
-import { StateVariableDeclaration } from './StateVariableDeclaration';
-import { StringLiteral } from './StringLiteral';
-import { StructDefinition } from './StructDefinition';
-import { ThrowStatement } from './ThrowStatement';
-import { TryStatement } from './TryStatement';
-import { TupleExpression } from './TupleExpression';
-import { TypeDefinition } from './TypeDefinition';
-import { UnaryOperation } from './UnaryOperation';
-import { UncheckedStatement } from './UncheckedStatement';
-import { UserDefinedTypeName } from './UserDefinedTypeName';
-import { UsingForDeclaration } from './UsingForDeclaration';
-import { VariableDeclaration } from './VariableDeclaration';
-import { VariableDeclarationStatement } from './VariableDeclarationStatement';
-import { WhileStatement } from './WhileStatement';
+export { ArrayTypeName } from './ArrayTypeName';
+export { AssemblyAssignment } from './AssemblyAssignment';
+export { AssemblyBlock } from './AssemblyBlock';
+export { AssemblyCall } from './AssemblyCall';
+export { AssemblyCase } from './AssemblyCase';
+export { AssemblyFor } from './AssemblyFor';
+export { AssemblyFunctionDefinition } from './AssemblyFunctionDefinition';
+export { AssemblyIf } from './AssemblyIf';
+export { AssemblyLocalDefinition } from './AssemblyLocalDefinition';
+export { AssemblyMemberAccess } from './AssemblyMemberAccess';
+export { AssemblyStackAssignment } from './AssemblyStackAssignment';
+export { AssemblySwitch } from './AssemblySwitch';
+export { BinaryOperation } from './BinaryOperation';
+export { Block } from './Block';
+export { BooleanLiteral } from './BooleanLiteral';
+export { Break } from './Break';
+export { BreakStatement } from './BreakStatement';
+export { CatchClause } from './CatchClause';
+export { Conditional } from './Conditional';
+export { Continue } from './Continue';
+export { ContinueStatement } from './ContinueStatement';
+export { ContractDefinition } from './ContractDefinition';
+export { CustomErrorDefinition } from './CustomErrorDefinition';
+export { DecimalNumber } from './DecimalNumber';
+export { DoWhileStatement } from './DoWhileStatement';
+export { ElementaryTypeName } from './ElementaryTypeName';
+export { EmitStatement } from './EmitStatement';
+export { EnumDefinition } from './EnumDefinition';
+export { EnumValue } from './EnumValue';
+export { EventDefinition } from './EventDefinition';
+export { ExpressionStatement } from './ExpressionStatement';
+export { FileLevelConstant } from './FileLevelConstant';
+export { ForStatement } from './ForStatement';
+export { FunctionCall } from './FunctionCall';
+export { FunctionDefinition } from './FunctionDefinition';
+export { FunctionTypeName } from './FunctionTypeName';
+export { HexLiteral } from './HexLiteral';
+export { HexNumber } from './HexNumber';
+export { Identifier } from './Identifier';
+export { IfStatement } from './IfStatement';
+export { ImportDirective } from './ImportDirective';
+export { IndexAccess } from './IndexAccess';
+export { IndexRangeAccess } from './IndexRangeAccess';
+export { InheritanceSpecifier } from './InheritanceSpecifier';
+export { InlineAssemblyStatement } from './InlineAssemblyStatement';
+export { LabelDefinition } from './LabelDefinition';
+export { Mapping } from './Mapping';
+export { MemberAccess } from './MemberAccess';
+export { ModifierDefinition } from './ModifierDefinition';
+export { ModifierInvocation } from './ModifierInvocation';
+export { NameValueExpression } from './NameValueExpression';
+export { NameValueList } from './NameValueList';
+export { NewExpression } from './NewExpression';
+export { NumberLiteral } from './NumberLiteral';
+export { PragmaDirective } from './PragmaDirective';
+export { ReturnStatement } from './ReturnStatement';
+export { RevertStatement } from './RevertStatement';
+export { SourceUnit } from './SourceUnit';
+export { StateVariableDeclaration } from './StateVariableDeclaration';
+export { StringLiteral } from './StringLiteral';
+export { StructDefinition } from './StructDefinition';
+export { ThrowStatement } from './ThrowStatement';
+export { TryStatement } from './TryStatement';
+export { TupleExpression } from './TupleExpression';
+export { TypeDefinition } from './TypeDefinition';
+export { UnaryOperation } from './UnaryOperation';
+export { UncheckedStatement } from './UncheckedStatement';
+export { UserDefinedTypeName } from './UserDefinedTypeName';
+export { UsingForDeclaration } from './UsingForDeclaration';
+export { VariableDeclaration } from './VariableDeclaration';
+export { VariableDeclarationStatement } from './VariableDeclarationStatement';
+export { WhileStatement } from './WhileStatement';
 
 // TODO remove mockPrinter when parser updates
 const mockPrinter: NodePrinter = {
@@ -79,79 +79,5 @@ const mockPrinter: NodePrinter = {
   }
 };
 
-export default {
-  AssemblyFunctionReturns: mockPrinter,
-  SubAssembly: mockPrinter,
-  ArrayTypeName,
-  AssemblyAssignment,
-  AssemblyBlock,
-  AssemblyCall,
-  AssemblyCase,
-  AssemblyFor,
-  AssemblyFunctionDefinition,
-  AssemblyIf,
-  AssemblyLocalDefinition,
-  AssemblyMemberAccess,
-  AssemblyStackAssignment,
-  AssemblySwitch,
-  BinaryOperation,
-  Block,
-  BooleanLiteral,
-  Break,
-  BreakStatement,
-  CatchClause,
-  Conditional,
-  Continue,
-  ContinueStatement,
-  ContractDefinition,
-  CustomErrorDefinition,
-  DecimalNumber,
-  DoWhileStatement,
-  ElementaryTypeName,
-  EmitStatement,
-  EnumDefinition,
-  EnumValue,
-  EventDefinition,
-  ExpressionStatement,
-  FileLevelConstant,
-  ForStatement,
-  FunctionCall,
-  FunctionDefinition,
-  FunctionTypeName,
-  HexLiteral,
-  HexNumber,
-  Identifier,
-  IfStatement,
-  ImportDirective,
-  IndexAccess,
-  IndexRangeAccess,
-  InheritanceSpecifier,
-  InlineAssemblyStatement,
-  LabelDefinition,
-  Mapping,
-  MemberAccess,
-  ModifierDefinition,
-  ModifierInvocation,
-  NameValueExpression,
-  NameValueList,
-  NewExpression,
-  NumberLiteral,
-  PragmaDirective,
-  ReturnStatement,
-  RevertStatement,
-  SourceUnit,
-  StateVariableDeclaration,
-  StringLiteral,
-  StructDefinition,
-  ThrowStatement,
-  TryStatement,
-  TupleExpression,
-  TypeDefinition,
-  UnaryOperation,
-  UncheckedStatement,
-  UserDefinedTypeName,
-  UsingForDeclaration,
-  VariableDeclaration,
-  VariableDeclarationStatement,
-  WhileStatement
-};
+export const AssemblyFunctionReturns = mockPrinter;
+export const SubAssembly = mockPrinter;

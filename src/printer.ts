@@ -1,4 +1,4 @@
-import nodes from './nodes';
+import * as nodes from './nodes';
 import { hasNodeIgnoreComment, prettierVersionSatisfies } from './common/util';
 import { ignoreComments } from './comments/ignore';
 
