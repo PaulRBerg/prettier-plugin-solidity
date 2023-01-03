@@ -7,7 +7,7 @@ import {
 import { getNextNonSpaceNonCommentCharacter } from '../common/util';
 
 import type { AstPath, Doc, ParserOptions } from 'prettier';
-import type { FunctionDefinitionWithComments } from '../ast-types';
+import type { FunctionDefinitionWithComments, Comment } from '../ast-types';
 import type { NodePrinter } from '../types';
 
 const { dedent, group, indent, join, line } = doc.builders;
@@ -54,7 +54,7 @@ const parameters = (
       (comment) =>
         getNextNonSpaceNonCommentCharacter(
           options.originalText,
-          comment,
+          comment as Comment,
           options.locEnd
         ) === ')'
     ) as Doc[];

@@ -2,7 +2,7 @@ import { doc, util, version } from 'prettier';
 import satisfies from 'semver/functions/satisfies';
 
 import type { Doc, Options } from 'prettier';
-import type { ASTNodeWithComments } from '../ast-types';
+import type { ASTNodeWithComments, WithRange } from '../ast-types';
 
 const { getNextNonSpaceNonCommentCharacterIndex, makeString } = util;
 
@@ -25,11 +25,15 @@ export interface GroupWithId extends doc.builders.Group {
 
 export function getNextNonSpaceNonCommentCharacter(
   text: string,
-  node: ASTNodeWithComments,
+  node: WithRange,
   locEnd: (node: ASTNodeWithComments) => number
 ) {
   return text.charAt(
-    getNextNonSpaceNonCommentCharacterIndex(text, node, locEnd) as number
+    getNextNonSpaceNonCommentCharacterIndex(
+      text,
+      node as ASTNodeWithComments,
+      locEnd
+    ) as number
   );
 }
 

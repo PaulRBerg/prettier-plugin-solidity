@@ -2,8 +2,7 @@ import { doc, util } from 'prettier';
 import { prettierVersionSatisfies } from './util';
 
 import type { Doc, AstPath, ParserOptions, Printer } from 'prettier';
-import type { ASTNodeWithComments } from '../ast-types';
-import type { PrettierComment } from '../types';
+import type { ASTNodeWithComments, Comment } from '../ast-types';
 
 const { group, indent, join, line, softline, hardline } = doc.builders;
 const { isNextLineEmptyAfterIndex } = util;
@@ -104,26 +103,28 @@ export function printComments(
   node: ASTNodeWithComments,
   path: AstPath,
   options: ParserOptions,
-  filter: (comment?: PrettierComment) => boolean = () => true
+  filter: (comment?: Comment) => boolean = () => true
 ) {
-  if (!node.comments) return [];
+  if (!node.comments) return '';
   const doc = join(
     line,
-    path.map((commentPath) => {
-      const comment = commentPath.getValue() as PrettierComment;
-      // TODO check if returning null has the same effect as ''
-      if (comment.trailing || comment.leading || comment.printed) {
-        return '';
-      }
-      if (!filter(comment)) {
-        return '';
-      }
-      comment.printed = true;
-      const printer = (options as ParserOptionsWithPrinter).printer;
-      return printer.printComment
-        ? printer.printComment(commentPath, options)
-        : '';
-    }, 'comments')
+    path
+      .map((commentPath) => {
+        const comment = commentPath.getValue() as Comment;
+        // TODO check if returning null has the same effect as ''
+        if (comment.trailing || comment.leading || comment.printed) {
+          return '';
+        }
+        if (!filter(comment)) {
+          return '';
+        }
+        comment.printed = true;
+        const printer = (options as ParserOptionsWithPrinter).printer;
+        return printer.printComment
+          ? printer.printComment(commentPath, options)
+          : '';
+      }, 'comments')
+      .filter((commentDoc: Doc) => commentDoc !== '')
   );
 
   // The following if statement will never be 100% covered in a single run

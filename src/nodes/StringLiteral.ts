@@ -20,5 +20,3 @@ export const StringLiteral: NodePrinter = {
     return join(hardline, list);
   }
 };
-
-module.exports = StringLiteral;

@@ -4,7 +4,7 @@ import type { HandlerArguments } from '../comment-types';
 
 const { addLeadingComment, addTrailingComment, addDanglingComment } = util;
 
-function handleModifierInvocationComments({
+export function handleModifierInvocationComments({
   text,
   precedingNode,
   enclosingNode,
@@ -64,5 +64,3 @@ function handleModifierInvocationComments({
 
   return false;
 }
-
-module.exports = handleModifierInvocationComments;

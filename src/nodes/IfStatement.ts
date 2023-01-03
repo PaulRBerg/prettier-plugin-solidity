@@ -3,8 +3,8 @@ import { printComments, printSeparatedItem } from '../common/printer-helpers';
 
 import type { AstPath, Doc } from 'prettier';
 import type { Statement } from '@solidity-parser/parser/src/ast-types';
-import type { IfStatementWithComments } from '../ast-types';
-import type { NodePrinter, PrettierComment } from '../types';
+import type { IfStatementWithComments, Comment } from '../ast-types';
+import type { NodePrinter } from '../types';
 
 const { group, hardline, indent, line } = doc.builders;
 
@@ -37,7 +37,7 @@ const printElse = (
   node: IfStatementWithComments,
   path: AstPath,
   print: (ast: AstPath) => Doc,
-  commentsBetweenIfAndElse: PrettierComment[]
+  commentsBetweenIfAndElse: Comment[]
 ) => {
   if (node.falseBody) {
     const elseOnSameLine =
@@ -53,7 +53,7 @@ const printElse = (
 
 export const IfStatement: NodePrinter = {
   print: ({ node, options, path, print }) => {
-    const comments = (node.comments as PrettierComment[]) || [];
+    const comments = (node.comments as Comment[]) || [];
     const commentsBetweenIfAndElse = comments.filter(
       (comment) => !comment.leading && !comment.trailing
     );

@@ -1,5 +1,5 @@
 import { AstPath } from 'prettier';
-import { PrettierComment } from '../types';
+import { Comment } from '../ast-types';
 
 export function ignoreComments(path: AstPath) {
   const node = path.getValue();
@@ -16,7 +16,7 @@ export function ignoreComments(path: AstPath) {
       // The key `comments` will contain every comment for this node
       case 'comments':
         path.each((commentPath) => {
-          const comment = commentPath.getValue() as PrettierComment;
+          const comment = commentPath.getValue() as Comment;
           comment.printed = true;
         }, 'comments');
         break;

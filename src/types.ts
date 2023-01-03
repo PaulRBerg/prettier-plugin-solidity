@@ -1,18 +1,9 @@
 import type { AstPath, Doc, ParserOptions } from 'prettier';
-import type { Comment, ASTNodeWithComments } from './ast-types';
+import type { ASTNodeWithComments } from './ast-types';
 
 export interface PrettierParserOptions extends ParserOptions {
   compiler: string;
 }
-
-export type PrettierComment = Comment & {
-  leading: boolean;
-  trailing: boolean;
-  printed: boolean;
-  precedingNode: ASTNodeWithComments;
-  enclosingNode: ASTNodeWithComments;
-  followingNode: ASTNodeWithComments;
-};
 
 export interface NodePrinterArguments {
   node: ASTNodeWithComments;

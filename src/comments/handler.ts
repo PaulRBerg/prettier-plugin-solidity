@@ -5,11 +5,11 @@ import {
   handleRemainingComment
 } from '../prettier-comments/language-js/comments';
 import handlers from './handlers';
-import type { PrettierComment } from '../types';
+import type { Comment } from '../ast-types';
 import type { HandlerArguments } from './comment-types';
 
 export function solidityHandleOwnLineComment(
-  comment: PrettierComment,
+  comment: Comment,
   text: string,
   options: ParserOptions,
   ast: AstPath,
@@ -35,7 +35,7 @@ export function solidityHandleOwnLineComment(
 }
 
 export function solidityHandleEndOfLineComment(
-  comment: PrettierComment,
+  comment: Comment,
   text: string,
   options: ParserOptions,
   ast: AstPath,
@@ -61,7 +61,7 @@ export function solidityHandleEndOfLineComment(
 }
 
 export function solidityHandleRemainingComment(
-  comment: PrettierComment,
+  comment: Comment,
   text: string,
   options: ParserOptions,
   ast: AstPath,
@@ -86,6 +86,6 @@ export function solidityHandleRemainingComment(
   return false;
 }
 
-export function isBlockComment(comment: PrettierComment) {
+export function isBlockComment(comment: Comment) {
   return comment.type === 'BlockComment';
 }

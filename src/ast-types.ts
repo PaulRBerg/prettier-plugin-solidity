@@ -4,7 +4,7 @@ export const CommentTypes = ['BlockComment', 'LineComment'] as const;
 
 export type CommentTypeString = typeof CommentTypes[number];
 
-export interface BaseComment {
+export interface BaseComment extends WithRange {
   type: CommentTypeString;
   range?: [number, number];
   loc?: Location;
@@ -12,6 +12,18 @@ export interface BaseComment {
   value: string;
 }
 
+export interface BaseComment {
+  leading: boolean;
+  trailing: boolean;
+  printed: boolean;
+  precedingNode: ASTNodeWithComments;
+  enclosingNode: ASTNodeWithComments;
+  followingNode: ASTNodeWithComments;
+}
+
+export interface WithRange {
+  range?: [number, number];
+}
 export interface BlockComment extends BaseComment {
   type: 'BlockComment';
 }

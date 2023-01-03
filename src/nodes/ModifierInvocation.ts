@@ -1,8 +1,8 @@
 import { printComments, printSeparatedList } from '../common/printer-helpers';
 
 import type { AstPath, Doc, ParserOptions } from 'prettier';
-import type { ModifierInvocationWithComments } from '../ast-types';
-import type { NodePrinter, PrettierComment } from '../types';
+import type { ModifierInvocationWithComments, Comment } from '../ast-types';
+import type { NodePrinter } from '../types';
 
 const modifierArguments = (
   node: ModifierInvocationWithComments,
@@ -17,7 +17,7 @@ const modifierArguments = (
       ? ['(', printSeparatedList(path.map(print, 'arguments')), ')']
       : '()';
   }
-  const comments = node.comments as PrettierComment[];
+  const comments = node.comments as Comment[];
   if (
     comments &&
     comments.some(
