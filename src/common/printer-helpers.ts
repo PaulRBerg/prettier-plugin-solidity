@@ -25,10 +25,10 @@ export function printComments(
         const comment = commentPath.getValue() as Comment;
         // TODO check if returning null has the same effect as ''
         if (comment.trailing || comment.leading || comment.printed) {
-          return '';
+          return;
         }
         if (!filter(comment)) {
-          return '';
+          return;
         }
         comment.printed = true;
         const printer = (options as ParserOptionsWithPrinter).printer;
@@ -36,7 +36,7 @@ export function printComments(
           ? printer.printComment(commentPath, options)
           : '';
       }, 'comments')
-      .filter((commentDoc: Doc) => commentDoc !== '')
+      .filter(Boolean) as Doc[]
   );
 
   // The following if statement will never be 100% covered in a single run
