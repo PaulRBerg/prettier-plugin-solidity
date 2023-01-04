@@ -7,4 +7,3 @@ tests/config/**/*.js
 src/prettier-comments/**/*.js
 # TODO 
 tests/**/*.js
-scripts/**/*.js
