@@ -7,41 +7,46 @@ import type { ASTNodeWithComments, Comment } from '../ast-types';
 const { group, indent, join, line, softline, hardline } = doc.builders;
 const { isNextLineEmptyAfterIndex } = util;
 
-interface PrintSeparatedOptions {
-  firstSeparator?: Doc;
-  separator?: Doc;
-  lastSeparator?: Doc;
-  grouped?: boolean;
-}
-// This function will add an indentation to the `list` and separate it from the
-// rest of the `doc` in most cases by a `softline`.
-// the list itself will be printed with a separator that in most cases is a
-// comma (,) and a `line`
-export function printSeparatedList(
-  list: Doc[],
-  {
-    firstSeparator = softline,
-    separator = [',', line],
-    lastSeparator = firstSeparator,
-    grouped = true
-  }: PrintSeparatedOptions = {}
-) {
-  const doc = [indent([firstSeparator, join(separator, list)]), lastSeparator];
-  return grouped ? group(doc) : doc;
+interface ParserOptionsWithPrinter extends ParserOptions {
+  printer: Printer;
 }
 
-// This function will add an indentation to the `item` and separate it from the
-// rest of the `doc` in most cases by a `softline`.
-export function printSeparatedItem(
-  item: Doc,
-  {
-    firstSeparator = softline,
-    lastSeparator = firstSeparator,
-    grouped = true
-  }: PrintSeparatedOptions = {}
+export function printComments(
+  node: ASTNodeWithComments,
+  path: AstPath,
+  options: ParserOptions,
+  filter: (comment?: Comment) => boolean = () => true
 ) {
-  const doc = [indent([firstSeparator, item]), lastSeparator];
-  return grouped ? group(doc) : doc;
+  if (!node.comments) return '';
+  const doc = join(
+    line,
+    path
+      .map((commentPath) => {
+        const comment = commentPath.getValue() as Comment;
+        // TODO check if returning null has the same effect as ''
+        if (comment.trailing || comment.leading || comment.printed) {
+          return '';
+        }
+        if (!filter(comment)) {
+          return '';
+        }
+        comment.printed = true;
+        const printer = (options as ParserOptionsWithPrinter).printer;
+        return printer.printComment
+          ? printer.printComment(commentPath, options)
+          : '';
+      }, 'comments')
+      .filter((commentDoc: Doc) => commentDoc !== '')
+  );
+
+  // The following if statement will never be 100% covered in a single run
+  // since it depends on the version of Prettier being used.
+  // Mocking the behaviour will introduce a lot of maintenance in the tests.
+  /* c8 ignore start */
+  return prettierVersionSatisfies('^2.3.0')
+    ? doc.parts // Prettier V2
+    : doc; // Prettier V3
+  /* c8 ignore stop */
 }
 
 export function printPreservingEmptyLines(
@@ -95,44 +100,43 @@ export function printPreservingEmptyLines(
   return parts;
 }
 
-interface ParserOptionsWithPrinter extends ParserOptions {
-  printer: Printer;
+interface PrintSeparatedOptions {
+  firstSeparator?: Doc;
+  separator?: Doc;
+  lastSeparator?: Doc;
+  grouped?: boolean;
 }
 
-export function printComments(
-  node: ASTNodeWithComments,
-  path: AstPath,
-  options: ParserOptions,
-  filter: (comment?: Comment) => boolean = () => true
+// This function will add an indentation to the `item` and separate it from the
+// rest of the `doc` in most cases by a `softline`.
+export function printSeparatedItem(
+  item: Doc,
+  {
+    firstSeparator = softline,
+    lastSeparator = firstSeparator,
+    grouped = true
+  }: PrintSeparatedOptions = {}
 ) {
-  if (!node.comments) return '';
-  const doc = join(
-    line,
-    path
-      .map((commentPath) => {
-        const comment = commentPath.getValue() as Comment;
-        // TODO check if returning null has the same effect as ''
-        if (comment.trailing || comment.leading || comment.printed) {
-          return '';
-        }
-        if (!filter(comment)) {
-          return '';
-        }
-        comment.printed = true;
-        const printer = (options as ParserOptionsWithPrinter).printer;
-        return printer.printComment
-          ? printer.printComment(commentPath, options)
-          : '';
-      }, 'comments')
-      .filter((commentDoc: Doc) => commentDoc !== '')
-  );
+  const doc = [indent([firstSeparator, item]), lastSeparator];
+  return grouped ? group(doc) : doc;
+}
 
-  // The following if statement will never be 100% covered in a single run
-  // since it depends on the version of Prettier being used.
-  // Mocking the behaviour will introduce a lot of maintenance in the tests.
-  /* c8 ignore start */
-  return prettierVersionSatisfies('^2.3.0')
-    ? doc.parts // Prettier V2
-    : doc; // Prettier V3
-  /* c8 ignore stop */
+// This function will add an indentation to the `list` and separate it from the
+// rest of the `doc` in most cases by a `softline`.
+// the list itself will be printed with a separator that in most cases is a
+// comma (,) and a `line`
+export function printSeparatedList(
+  list: Doc[],
+  {
+    firstSeparator,
+    separator = [',', line],
+    lastSeparator,
+    grouped
+  }: PrintSeparatedOptions = {}
+) {
+  return printSeparatedItem(join(separator, list), {
+    firstSeparator,
+    lastSeparator,
+    grouped
+  });
 }
