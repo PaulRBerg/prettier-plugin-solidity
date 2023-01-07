@@ -1,11 +1,11 @@
 import { doc } from 'prettier';
-import { printSeparatedList } from '../common/printer-helpers';
-
 import type { AstPath, Doc } from 'prettier';
+
 import type {
-  VariableDeclarationWithComments,
-  StateVariableDeclarationVariableWithComments
+  StateVariableDeclarationVariableWithComments,
+  VariableDeclarationWithComments
 } from '../ast-types';
+import { printSeparatedList } from '../common/printer-helpers';
 import type { NodePrinter } from '../types';
 
 const { group, indent, line } = doc.builders;

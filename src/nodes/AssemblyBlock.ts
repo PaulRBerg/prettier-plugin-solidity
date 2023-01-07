@@ -1,10 +1,10 @@
 import { doc } from 'prettier';
+
 import {
   printComments,
   printPreservingEmptyLines,
   printSeparatedItem
 } from '../common/printer-helpers';
-
 import type { NodePrinter } from '../types';
 
 const { hardline } = doc.builders;

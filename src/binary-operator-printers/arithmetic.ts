@@ -1,7 +1,7 @@
 import { doc } from 'prettier';
-import comparison from './comparison';
-
 import type { AstPath, Doc } from 'prettier';
+
+import comparison from './comparison';
 import type { BinaryOperationPrinter } from './types';
 
 const { group, line, indent } = doc.builders;

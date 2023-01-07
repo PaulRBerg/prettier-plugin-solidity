@@ -1,9 +1,9 @@
-import { doc } from 'prettier';
-import { printSeparatedList } from '../common/printer-helpers';
-
-import type { AstPath, Doc } from 'prettier';
 import type { BaseASTNode } from '@solidity-parser/parser/src/ast-types';
+import { doc } from 'prettier';
+import type { AstPath, Doc } from 'prettier';
+
 import type { TupleExpressionWithComments } from '../ast-types';
+import { printSeparatedList } from '../common/printer-helpers';
 import type { NodePrinter } from '../types';
 
 const { group } = doc.builders;

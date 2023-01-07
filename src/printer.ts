@@ -1,9 +1,9 @@
-import * as nodes from './nodes';
-import { hasNodeIgnoreComment, prettierVersionSatisfies } from './common/util';
-import { ignoreComments } from './comments/ignore';
+import type { AstPath, Doc, ParserOptions } from 'prettier';
 
-import type { AstPath, ParserOptions, Doc } from 'prettier';
 import type { ASTNodeWithComments } from './ast-types';
+import { ignoreComments } from './comments/ignore';
+import { hasNodeIgnoreComment, prettierVersionSatisfies } from './common/util';
+import * as nodes from './nodes';
 import type { NodePrinterArguments } from './types';
 
 let checked = false;

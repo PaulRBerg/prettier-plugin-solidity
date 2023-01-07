@@ -1,5 +1,6 @@
 import type { ParserOptions } from 'prettier';
-import type { Comment, ASTNodeWithComments } from '../ast-types';
+
+import type { ASTNodeWithComments, Comment } from '../ast-types';
 
 export interface HandlerArguments {
   text: string;

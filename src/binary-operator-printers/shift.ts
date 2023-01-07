@@ -1,5 +1,4 @@
 import arithmetic from './arithmetic';
-
 import type { BinaryOperationPrinter } from './types';
 
 export default {

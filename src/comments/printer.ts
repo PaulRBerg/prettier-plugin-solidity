@@ -1,5 +1,6 @@
 import { doc, util } from 'prettier';
 import type { AstPath, ParserOptions } from 'prettier';
+
 import type { Comment } from '../ast-types';
 
 const { hardline, join } = doc.builders;

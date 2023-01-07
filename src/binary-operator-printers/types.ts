@@ -1,6 +1,7 @@
-import { BinOp } from '@solidity-parser/parser/src/ast-types';
-import { AstPath, Doc } from 'prettier';
-import { BinaryOperationWithComments } from '../ast-types';
+import type { BinOp } from '@solidity-parser/parser/src/ast-types';
+import type { AstPath, Doc } from 'prettier';
+
+import type { BinaryOperationWithComments } from '../ast-types';
 
 export interface BinaryOperationPrinter {
   match: (op: BinOp) => boolean;

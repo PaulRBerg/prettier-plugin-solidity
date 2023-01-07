@@ -1,11 +1,11 @@
-import { doc } from 'prettier';
-import { printSeparatedList } from '../common/printer-helpers';
-
-import type { AstPath, Doc } from 'prettier';
 import type { VariableDeclaration } from '@solidity-parser/parser/src/ast-types';
+import { doc } from 'prettier';
+import type { AstPath, Doc } from 'prettier';
+
 import type { VariableDeclarationStatementWithComments } from '../ast-types';
-import type { NodePrinter } from '../types';
+import { printSeparatedList } from '../common/printer-helpers';
 import type { GroupWithId } from '../common/util';
+import type { NodePrinter } from '../types';
 
 const { group, indentIfBreak } = doc.builders;
 

@@ -1,8 +1,7 @@
 // @TODO: add support for assembly language specifier
+import type { InlineAssemblyStatementWithComments } from '../ast-types';
 import { printSeparatedList } from '../common/printer-helpers';
 import { printString } from '../common/util';
-
-import type { InlineAssemblyStatementWithComments } from '../ast-types';
 import type { NodePrinter } from '../types';
 
 export const InlineAssemblyStatement: NodePrinter = {

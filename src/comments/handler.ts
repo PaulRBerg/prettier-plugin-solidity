@@ -1,12 +1,13 @@
-import type { ParserOptions, AstPath } from 'prettier';
+import type { AstPath, ParserOptions } from 'prettier';
+
+import type { Comment } from '../ast-types';
 import {
-  handleOwnLineComment,
   handleEndOfLineComment,
+  handleOwnLineComment,
   handleRemainingComment
 } from '../prettier-comments/language-js/comments';
-import handlers from './handlers';
-import type { Comment } from '../ast-types';
 import type { HandlerArguments } from './comment-types';
+import handlers from './handlers';
 
 export function solidityHandleOwnLineComment(
   comment: Comment,

@@ -1,6 +1,6 @@
 import { doc } from 'prettier';
-
 import type { AstPath, Doc } from 'prettier';
+
 import type { StateVariableDeclarationWithComments } from '../ast-types';
 import type { NodePrinter } from '../types';
 

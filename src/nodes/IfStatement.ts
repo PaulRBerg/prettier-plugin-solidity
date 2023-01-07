@@ -1,9 +1,9 @@
-import { doc } from 'prettier';
-import { printComments, printSeparatedItem } from '../common/printer-helpers';
-
-import type { AstPath, Doc } from 'prettier';
 import type { Statement } from '@solidity-parser/parser/src/ast-types';
-import type { IfStatementWithComments, Comment } from '../ast-types';
+import { doc } from 'prettier';
+import type { AstPath, Doc } from 'prettier';
+
+import type { Comment, IfStatementWithComments } from '../ast-types';
+import { printComments, printSeparatedItem } from '../common/printer-helpers';
 import type { NodePrinter } from '../types';
 
 const { group, hardline, indent, line } = doc.builders;

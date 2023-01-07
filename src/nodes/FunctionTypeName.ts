@@ -1,8 +1,8 @@
 import { doc } from 'prettier';
-import { printSeparatedList } from '../common/printer-helpers';
-
 import type { AstPath, Doc } from 'prettier';
+
 import type { FunctionTypeNameWithComments } from '../ast-types';
+import { printSeparatedList } from '../common/printer-helpers';
 import type { NodePrinter } from '../types';
 
 const { group, indent, line } = doc.builders;

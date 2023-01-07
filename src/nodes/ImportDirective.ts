@@ -1,11 +1,11 @@
 import { doc } from 'prettier';
+import type { Doc, ParserOptions } from 'prettier';
 import coerce from 'semver/functions/coerce';
 import satisfies from 'semver/functions/satisfies';
+
+import type { ImportDirectiveWithComments } from '../ast-types';
 import { printSeparatedList } from '../common/printer-helpers';
 import { printString } from '../common/util';
-
-import type { Doc, ParserOptions } from 'prettier';
-import type { ImportDirectiveWithComments } from '../ast-types';
 import type { NodePrinter } from '../types';
 
 const { group, line, softline } = doc.builders;

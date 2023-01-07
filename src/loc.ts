@@ -1,6 +1,7 @@
 // see: https://github.com/prettier/prettier/blob/main/src/language-js/loc.js
-import type { ASTNodeWithComments } from './ast-types';
 import type { Expression } from '@solidity-parser/parser/src/ast-types';
+
+import type { ASTNodeWithComments } from './ast-types';
 
 export interface WithExpression {
   expression: Expression;

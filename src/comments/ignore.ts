@@ -1,5 +1,6 @@
-import { AstPath } from 'prettier';
-import { Comment } from '../ast-types';
+import type { AstPath } from 'prettier';
+
+import type { Comment } from '../ast-types';
 
 export function ignoreComments(path: AstPath) {
   const node = path.getValue();

@@ -1,11 +1,11 @@
 import { doc } from 'prettier';
+import type { AstPath, Doc } from 'prettier';
+
+import type { TryStatementWithComments } from '../ast-types';
 import {
   printSeparatedItem,
   printSeparatedList
 } from '../common/printer-helpers';
-
-import type { AstPath, Doc } from 'prettier';
-import type { TryStatementWithComments } from '../ast-types';
 import type { NodePrinter } from '../types';
 
 const { join, line } = doc.builders;

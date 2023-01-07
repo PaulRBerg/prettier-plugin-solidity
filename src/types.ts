@@ -1,4 +1,5 @@
 import type { AstPath, Doc, ParserOptions } from 'prettier';
+
 import type { ASTNodeWithComments } from './ast-types';
 
 export interface PrettierParserOptions extends ParserOptions {

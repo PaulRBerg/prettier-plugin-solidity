@@ -1,6 +1,5 @@
-import { printSeparatedList } from '../common/printer-helpers';
-
 import type { AssemblyCallWithComments } from '../ast-types';
+import { printSeparatedList } from '../common/printer-helpers';
 import type { NodePrinter } from '../types';
 
 export const AssemblyCall: NodePrinter = {

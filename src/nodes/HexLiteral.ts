@@ -1,7 +1,7 @@
 import { doc } from 'prettier';
-import { printString } from '../common/util';
 
 import type { HexLiteralWithComments } from '../ast-types';
+import { printString } from '../common/util';
 import type { NodePrinter } from '../types';
 
 const { join, line } = doc.builders;

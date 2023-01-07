@@ -1,7 +1,7 @@
-import { printSeparatedList } from '../common/printer-helpers';
-
 import type { AstPath, Doc } from 'prettier';
+
 import type { CatchClauseWithComments } from '../ast-types';
+import { printSeparatedList } from '../common/printer-helpers';
 import type { NodePrinter } from '../types';
 
 const parameters = (

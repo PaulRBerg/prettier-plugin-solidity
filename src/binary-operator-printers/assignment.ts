@@ -1,5 +1,6 @@
 import { doc } from 'prettier';
-import { BinaryOperationPrinter } from './types';
+
+import type { BinaryOperationPrinter } from './types';
 
 const { group, line, indent } = doc.builders;
 

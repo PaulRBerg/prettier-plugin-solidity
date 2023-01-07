@@ -1,12 +1,12 @@
-import * as comments from './comments';
+import type { SupportLanguage } from 'prettier';
+
+import type { Comment } from './ast-types';
 import massageAstNode from './clean';
+import * as comments from './comments';
 import { locEnd, locStart } from './loc';
 import { options } from './options';
 import parse from './parser';
 import print from './printer';
-
-import type { SupportLanguage } from 'prettier';
-import type { Comment } from './ast-types';
 
 interface LinguistSupportLanguage extends SupportLanguage {
   type?: string;

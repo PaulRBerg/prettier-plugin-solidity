@@ -1,8 +1,8 @@
 import { doc, util } from 'prettier';
-import { prettierVersionSatisfies } from './util';
+import type { AstPath, Doc, ParserOptions, Printer } from 'prettier';
 
-import type { Doc, AstPath, ParserOptions, Printer } from 'prettier';
 import type { ASTNodeWithComments, Comment } from '../ast-types';
+import { prettierVersionSatisfies } from './util';
 
 const { group, indent, join, line, softline, hardline } = doc.builders;
 const { isNextLineEmptyAfterIndex } = util;

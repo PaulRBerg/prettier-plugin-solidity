@@ -1,3 +1,5 @@
+import type { NodePrinter } from '../types';
+
 export { ArrayTypeName } from './ArrayTypeName';
 export { AssemblyAssignment } from './AssemblyAssignment';
 export { AssemblyBlock } from './AssemblyBlock';
@@ -70,8 +72,6 @@ export { UsingForDeclaration } from './UsingForDeclaration';
 export { VariableDeclaration } from './VariableDeclaration';
 export { VariableDeclarationStatement } from './VariableDeclarationStatement';
 export { WhileStatement } from './WhileStatement';
-
-import type { NodePrinter } from '../types';
 
 // TODO remove mockPrinter when parser updates
 const mockPrinter: NodePrinter = {

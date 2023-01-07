@@ -1,5 +1,5 @@
 import arithmetic from './arithmetic';
-import { BinaryOperationPrinter } from './types';
+import type { BinaryOperationPrinter } from './types';
 
 export default {
   match: (op) => ['&', '|', '^'].includes(op),

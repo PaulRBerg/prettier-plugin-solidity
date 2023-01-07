@@ -1,8 +1,9 @@
 import { doc } from 'prettier';
-import { isLabel, LabelWithLabel } from '../common/util';
-
 import type { AstPath, Doc } from 'prettier';
+
 import type { MemberAccessWithComments } from '../ast-types';
+import { isLabel } from '../common/util';
+import type { LabelWithLabel } from '../common/util';
 import type { NodePrinter } from '../types';
 
 const { group, indent, label, softline } = doc.builders;

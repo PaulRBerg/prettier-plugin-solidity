@@ -1,10 +1,10 @@
 import { doc } from 'prettier';
+
+import type { AssemblyFunctionDefinitionWithComments } from '../ast-types';
 import {
   printSeparatedItem,
   printSeparatedList
 } from '../common/printer-helpers';
-
-import type { AssemblyFunctionDefinitionWithComments } from '../ast-types';
 import type { NodePrinter } from '../types';
 
 const { line } = doc.builders;

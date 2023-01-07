@@ -1,9 +1,10 @@
 import { doc } from 'prettier';
-import { printSeparatedList } from '../common/printer-helpers';
-import { isLabel, GroupWithId, LabelWithLabel } from '../common/util';
-
 import type { AstPath, Doc, ParserOptions } from 'prettier';
+
 import type { FunctionCallWithComments } from '../ast-types';
+import { printSeparatedList } from '../common/printer-helpers';
+import { isLabel } from '../common/util';
+import type { GroupWithId, LabelWithLabel } from '../common/util';
 import type { NodePrinter } from '../types';
 
 const { group, indentIfBreak, label, line, softline } = doc.builders;

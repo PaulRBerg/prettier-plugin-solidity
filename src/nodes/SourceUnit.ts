@@ -1,6 +1,6 @@
 import { doc } from 'prettier';
-import { printPreservingEmptyLines } from '../common/printer-helpers';
 
+import { printPreservingEmptyLines } from '../common/printer-helpers';
 import type { NodePrinter } from '../types';
 
 const { line } = doc.builders;

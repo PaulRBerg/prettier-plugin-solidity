@@ -1,7 +1,7 @@
-import { printComments, printSeparatedList } from '../common/printer-helpers';
-
 import type { AstPath, Doc, ParserOptions } from 'prettier';
-import type { ModifierInvocationWithComments, Comment } from '../ast-types';
+
+import type { Comment, ModifierInvocationWithComments } from '../ast-types';
+import { printComments, printSeparatedList } from '../common/printer-helpers';
 import type { NodePrinter } from '../types';
 
 const modifierArguments = (

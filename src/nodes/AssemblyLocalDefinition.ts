@@ -1,9 +1,8 @@
 import { doc } from 'prettier';
-
-import { printSeparatedList } from '../common/printer-helpers';
-
 import type { Doc } from 'prettier';
+
 import type { AssemblyLocalDefinitionWithComments } from '../ast-types';
+import { printSeparatedList } from '../common/printer-helpers';
 import type { NodePrinter } from '../types';
 
 const { line } = doc.builders;

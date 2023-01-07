@@ -1,6 +1,6 @@
 import { doc } from 'prettier';
-
 import type { AstPath, Doc } from 'prettier';
+
 import type { BinaryOperationPrinter } from './types';
 
 const { group, line, indent } = doc.builders;

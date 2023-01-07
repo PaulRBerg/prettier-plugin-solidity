@@ -1,7 +1,7 @@
 import { doc } from 'prettier';
-import { printSeparatedList } from '../common/printer-helpers';
 
 import type { NameValueListWithComments } from '../ast-types';
+import { printSeparatedList } from '../common/printer-helpers';
 import type { NodePrinter } from '../types';
 
 const { line, softline } = doc.builders;

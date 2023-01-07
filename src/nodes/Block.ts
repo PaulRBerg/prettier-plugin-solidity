@@ -1,10 +1,10 @@
 import { doc } from 'prettier';
-import {
-  printPreservingEmptyLines,
-  printComments
-} from '../common/printer-helpers';
 
 import type { BlockWithComments } from '../ast-types';
+import {
+  printComments,
+  printPreservingEmptyLines
+} from '../common/printer-helpers';
 import type { NodePrinter } from '../types';
 
 const { hardline, indent } = doc.builders;

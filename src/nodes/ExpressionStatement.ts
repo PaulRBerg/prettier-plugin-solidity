@@ -1,7 +1,7 @@
 import { doc } from 'prettier';
-import { printComments } from '../common/printer-helpers';
-
 import type { Doc } from 'prettier';
+
+import { printComments } from '../common/printer-helpers';
 import type { NodePrinter } from '../types';
 
 const { hardline } = doc.builders;

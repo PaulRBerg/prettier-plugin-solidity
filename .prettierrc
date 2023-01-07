@@ -1,4 +1,9 @@
 {
   "singleQuote": true,
-  "trailingComma": "none"
+  "trailingComma": "none",
+  "importOrder": ["<THIRD_PARTY_MODULES>", "^[./]"],
+  "importOrderParserPlugins": ["typescript"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }
+  

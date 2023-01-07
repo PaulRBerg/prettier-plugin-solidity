@@ -1,4 +1,5 @@
 import { util } from 'prettier';
+
 import { getNextNonSpaceNonCommentCharacter } from '../../common/util';
 import type { HandlerArguments } from '../comment-types';
 

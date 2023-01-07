@@ -1,7 +1,7 @@
 import { doc } from 'prettier';
-import { printSeparatedList } from '../common/printer-helpers';
 
 import type { StructDefinitionWithComments } from '../ast-types';
+import { printSeparatedList } from '../common/printer-helpers';
 import type { NodePrinter } from '../types';
 
 const { hardline } = doc.builders;

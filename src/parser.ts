@@ -1,15 +1,15 @@
-import extractComments from 'solidity-comments-extractor';
 // https://prettier.io/docs/en/plugins.html#parsers
 import * as parser from '@solidity-parser/parser';
+import type { BinOp } from '@solidity-parser/parser/src/ast-types';
+import type { Parser } from 'prettier';
 import coerce from 'semver/functions/coerce';
 import satisfies from 'semver/functions/satisfies';
+import extractComments from 'solidity-comments-extractor';
 
-import type { Parser } from 'prettier';
-import type { BinOp } from '@solidity-parser/parser/src/ast-types';
 import type {
-  SourceUnitWithComments,
   BinaryOperationWithComments,
   ExpressionWithComments,
+  SourceUnitWithComments,
   TupleExpressionWithComments
 } from './ast-types';
 import type { PrettierParserOptions } from './types';

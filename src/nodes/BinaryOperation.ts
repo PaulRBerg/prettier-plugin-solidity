@@ -1,7 +1,6 @@
 /* eslint-disable consistent-return */
-import printers from '../binary-operator-printers';
-
 import type { BinaryOperationWithComments } from '../ast-types';
+import printers from '../binary-operator-printers';
 import type { NodePrinter } from '../types';
 
 export const BinaryOperation: NodePrinter = {

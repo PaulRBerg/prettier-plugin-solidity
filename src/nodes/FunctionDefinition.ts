@@ -1,13 +1,13 @@
 import { doc } from 'prettier';
+import type { AstPath, Doc, ParserOptions } from 'prettier';
+
+import type { Comment, FunctionDefinitionWithComments } from '../ast-types';
 import {
   printComments,
   printSeparatedItem,
   printSeparatedList
 } from '../common/printer-helpers';
 import { getNextNonSpaceNonCommentCharacter } from '../common/util';
-
-import type { AstPath, Doc, ParserOptions } from 'prettier';
-import type { FunctionDefinitionWithComments, Comment } from '../ast-types';
 import type { NodePrinter } from '../types';
 
 const { dedent, group, indent, join, line } = doc.builders;

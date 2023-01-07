@@ -1,4 +1,5 @@
 import { doc } from 'prettier';
+
 import type { NodePrinter } from '../types';
 
 const { group, indent, line } = doc.builders;

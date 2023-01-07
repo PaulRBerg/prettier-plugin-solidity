@@ -1,13 +1,13 @@
 import { doc } from 'prettier';
+import type { AstPath, Doc, ParserOptions } from 'prettier';
+
+import type { ContractDefinitionWithComments } from '../ast-types';
 import {
   printComments,
   printPreservingEmptyLines,
   printSeparatedItem,
   printSeparatedList
 } from '../common/printer-helpers';
-
-import type { AstPath, Doc, ParserOptions } from 'prettier';
-import type { ContractDefinitionWithComments } from '../ast-types';
 import type { NodePrinter } from '../types';
 
 const { group, line, hardline } = doc.builders;

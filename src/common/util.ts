@@ -1,7 +1,7 @@
 import { doc, util, version } from 'prettier';
+import type { Doc, Options } from 'prettier';
 import satisfies from 'semver/functions/satisfies';
 
-import type { Doc, Options } from 'prettier';
 import type { ASTNodeWithComments, WithRange } from '../ast-types';
 
 const { getNextNonSpaceNonCommentCharacterIndex, makeString } = util;
